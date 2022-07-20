@@ -1,7 +1,9 @@
 package com.accenture.chickentest.domain.dao;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Farm {
-     //idgranja
+    private Long id;
     //lista eggs
     //lista chickens
     //presupuesto

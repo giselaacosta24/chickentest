@@ -1,8 +1,6 @@
 package com.accenture.chickentest.service;
 
-import com.accenture.chickentest.domain.dao.Chicken;
 import com.accenture.chickentest.domain.dao.Egg;
-import com.accenture.chickentest.domain.dto.ChickenDTO;
 import com.accenture.chickentest.exception.ObjectNotFoundException;
 import com.accenture.chickentest.mapper.ModelMapper;
 import com.accenture.chickentest.repository.EggRepository;
@@ -46,7 +44,19 @@ public class EggService {
     }
 
 
+    public EggDTO getEgg(long id) {
+        EggDTO eggDTO=new EggDTO();
+        Egg egg = eggRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("No existe id seleccionado, no se puede modificar"));
 
+        if(egg.getId() !=  null)
+            eggDTO = ModelMapper.INSTANCE.daoToDTOEgg(egg);
+
+        return eggDTO;
+
+
+
+    }
     public ResponseEntity<EggDTO> update(long id,EggDTO eggDTO) {
         Egg eggDTORequest = ModelMapper.INSTANCE.DTOtoDaoEgg(eggDTO);
 

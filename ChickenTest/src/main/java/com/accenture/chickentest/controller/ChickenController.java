@@ -32,7 +32,11 @@ public class ChickenController {
 
        return chickenService.save(chickenDTO);
     }
+    @GetMapping("/{id}")
+    public ChickenDTO getChicken(@PathVariable long id) {
 
+        return chickenService.getChicken(id);
+    }
   @PutMapping("/{id}")
    public ResponseEntity<ChickenDTO> updateChicken(@PathVariable long id, @RequestBody ChickenDTO chickenDTO) {
 

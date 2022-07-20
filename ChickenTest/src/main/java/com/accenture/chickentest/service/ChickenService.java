@@ -42,7 +42,19 @@ public class ChickenService {
 
     }
 
+    public ChickenDTO getChicken(long id) {
+        ChickenDTO chickenDTO=new ChickenDTO();
+        Chicken chicken = chickenRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("No existe id seleccionado, no se puede modificar"));
 
+        if(chicken.getId() !=  null)
+            chickenDTO = ModelMapper.INSTANCE.daoToDTOChicken(chicken);
+
+            return chickenDTO;
+
+
+
+    }
 
    public ResponseEntity<ChickenDTO> update(long id, ChickenDTO chickenDTO) {
        Chicken chickenDTORequest = ModelMapper.INSTANCE.DTOtoDaoChicken(chickenDTO);
