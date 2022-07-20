@@ -1,6 +1,7 @@
 package com.accenture.chickentest.controller;
 
 
+import com.accenture.chickentest.domain.dto.ChickenDTO;
 import com.accenture.chickentest.service.EggService;
 import com.accenture.chickentest.domain.dto.EggDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin ({"http://localhost:4200"})
 @RequestMapping("/api/v1/eggs")
 public class EggsController {
 
@@ -38,9 +40,8 @@ public class EggsController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteEgg(@PathVariable(name = "id") Long id) {
-        eggService.deleteEgg(id);
-        return "Egg eliminado";
+    public ResponseEntity<EggDTO>  deleteEgg(@PathVariable(name = "id") Long id) {
+        return  eggService.deleteEgg(id);
     }
 
 

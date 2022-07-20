@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin ({"http://localhost:4200"})
 @RequestMapping("/api/v1/chickens")
 public class ChickenController {
 
@@ -39,9 +40,9 @@ public class ChickenController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteChicken(@PathVariable(name = "id") Long id) {
-        chickenService.deleteChicken(id);
-        return "Chicken eliminado";
+    public ResponseEntity<ChickenDTO>  deleteChicken(@PathVariable(name = "id") Long id) {
+        ;
+        return chickenService.deleteChicken(id);
    }
 
 }

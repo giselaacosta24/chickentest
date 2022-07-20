@@ -1,6 +1,8 @@
 package com.accenture.chickentest.service;
 
+import com.accenture.chickentest.domain.dao.Chicken;
 import com.accenture.chickentest.domain.dao.Egg;
+import com.accenture.chickentest.domain.dto.ChickenDTO;
 import com.accenture.chickentest.exception.ObjectNotFoundException;
 import com.accenture.chickentest.mapper.ModelMapper;
 import com.accenture.chickentest.repository.EggRepository;
@@ -59,13 +61,13 @@ public class EggService {
     }
 
 
-    public void deleteEgg(long id) {
+    public ResponseEntity<EggDTO>  deleteEgg(long id) {
         Egg egg = eggRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("No existe id seleccionado, no se puede eliminar"));
-
         eggRepository.delete(egg);
-    }
+        return  new ResponseEntity<>(HttpStatus.OK);
 
+    }
 
 
 

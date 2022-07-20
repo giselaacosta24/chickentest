@@ -58,10 +58,11 @@ public class ChickenService {
    }
 
 
-    public void deleteChicken(long id) {
+    public ResponseEntity<ChickenDTO>  deleteChicken(long id) {
         Chicken chicken = chickenRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("No existe id seleccionado, no se puede eliminar"));
-
         chickenRepository.delete(chicken);
+        return  new ResponseEntity<>(HttpStatus.OK);
+
    }
 }
