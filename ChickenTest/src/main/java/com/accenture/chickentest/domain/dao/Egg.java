@@ -18,15 +18,13 @@ public class Egg {
     private Long id;
     @JsonProperty("price")
     private double price;
-    @JsonProperty("idFarmer")
-    private Long idFarmer;
+
     @JsonProperty("amountDays")
     private Long amountDays;
     public Egg(){}
-    public Egg(Long id, double price, Long idFarmer, Long amountDays) {
+    public Egg(Long id, double price, Long amountDays) {
         this.id = id;
         this.price = price;
-        this.idFarmer = idFarmer;
         this.amountDays = amountDays;
     }
 
@@ -46,13 +44,6 @@ public class Egg {
         this.price = price;
     }
 
-    public Long getIdFarmer() {
-        return idFarmer;
-    }
-
-    public void setIdFarmer(Long idFarmer) {
-        this.idFarmer = idFarmer;
-    }
 
     public Long getAmountDays() {
         return amountDays;

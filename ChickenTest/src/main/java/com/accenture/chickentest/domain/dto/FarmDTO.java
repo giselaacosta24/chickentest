@@ -1,37 +1,29 @@
-package com.accenture.chickentest.domain.dao;
+package com.accenture.chickentest.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.*;
+
+import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-@Entity
-@Table(name = "farm")
-public class Farm {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@Data
+public class FarmDTO {
     @JsonProperty("id")
-
     private Long id;
 
     @JsonProperty("name")
     private String name;
-/*    @Transient
+
+ /*   @Transient
     private List<Chicken> chickens;
     @Transient
     private List<Egg> eggs;*/
 
     @JsonProperty("estimate")
     private double estimate;
-    public Farm(){
-//        this.eggs=new ArrayList<>();
-//        this.chickens=new ArrayList<>();
-    }
-/*    public Farm(Long id, String name, List<Chicken> chickens, List<Egg> eggs, double estimate) {
+
+ /*   public FarmDTO(Long id, String name, List<Chicken> chickens, List<Egg> eggs, double estimate) {
         this.id = id;
         this.name = name;
         this.chickens = chickens;
@@ -39,7 +31,7 @@ public class Farm {
         this.estimate = estimate;
     }*/
 
-    public Farm(Long id, String name, double estimate) {
+    public FarmDTO(Long id, String name, double estimate) {
         this.id = id;
         this.name = name;
         this.estimate = estimate;
@@ -61,7 +53,7 @@ public class Farm {
         this.name = name;
     }
 
- /*   public List<Chicken> getChickens() {
+  /*  public List<Chicken> getChickens() {
         return chickens;
     }
 
@@ -85,6 +77,3 @@ public class Farm {
         this.estimate = estimate;
     }
 }
-
-
-

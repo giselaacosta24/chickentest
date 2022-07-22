@@ -64,7 +64,6 @@ public class EggService {
                 .orElseThrow(() -> new ObjectNotFoundException("No existe id seleccionado, no se puede modificar"));
         egg.setPrice(eggDTORequest.getPrice());
         egg.setAmountDays(eggDTORequest.getAmountDays());
-        egg.setIdFarmer(eggDTORequest.getIdFarmer());
         eggRepository.save(egg);
         return new ResponseEntity<EggDTO>(HttpStatus.OK);
 

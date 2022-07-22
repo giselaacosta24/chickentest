@@ -63,7 +63,7 @@ public class ChickenService {
                .orElseThrow(() -> new ObjectNotFoundException("No existe id seleccionado, no se puede modificar"));
        chicken.setPrice(chickenDTORequest.getPrice());
        chicken.setAmountDays(chickenDTORequest.getAmountDays());
-       chicken.setIdFarmer(chickenDTORequest.getIdFarmer());
+
        chickenRepository.save(chicken);
        return new ResponseEntity<>(HttpStatus.OK);
 
