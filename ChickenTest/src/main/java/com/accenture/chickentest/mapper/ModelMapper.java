@@ -8,6 +8,9 @@ import com.accenture.chickentest.domain.dto.EggDTO;
 import com.accenture.chickentest.domain.dto.FarmDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
+
+import java.util.Optional;
+
 @Mapper
 public interface ModelMapper {
 

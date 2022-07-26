@@ -9,6 +9,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "farm")
 public class Farm {
@@ -20,17 +23,18 @@ public class Farm {
 
     @JsonProperty("name")
     private String name;
-/*    @Transient
+    @OneToMany
     private List<Chicken> chickens;
-    @Transient
+ /*   @Transient
     private List<Egg> eggs;*/
 
     @JsonProperty("estimate")
     private double estimate;
     public Farm(){
 //        this.eggs=new ArrayList<>();
-//        this.chickens=new ArrayList<>();
+       this.chickens=new ArrayList<>();
     }
+
 /*    public Farm(Long id, String name, List<Chicken> chickens, List<Egg> eggs, double estimate) {
         this.id = id;
         this.name = name;
@@ -39,9 +43,10 @@ public class Farm {
         this.estimate = estimate;
     }*/
 
-    public Farm(Long id, String name, double estimate) {
+    public Farm(Long id, String name, List<Chicken> chickens, double estimate) {
         this.id = id;
         this.name = name;
+        this.chickens = chickens;
         this.estimate = estimate;
     }
 
@@ -61,7 +66,7 @@ public class Farm {
         this.name = name;
     }
 
- /*   public List<Chicken> getChickens() {
+   public List<Chicken> getChickens() {
         return chickens;
     }
 
@@ -69,7 +74,7 @@ public class Farm {
         this.chickens = chickens;
     }
 
-    public List<Egg> getEggs() {
+/*     public List<Egg> getEggs() {
         return eggs;
     }
 
@@ -83,6 +88,11 @@ public class Farm {
 
     public void setEstimate(double estimate) {
         this.estimate = estimate;
+    }
+
+
+    public void addChicken(Chicken chicken){
+        this.chickens.add(chicken);
     }
 }
 

@@ -53,4 +53,16 @@ public class Chicken {
     public void setAmountDays(Long amountDays) {
         this.amountDays = amountDays;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj){
+            return true;
+        }
+        if(!(obj instanceof Chicken)){
+            return false;
+        }
+        Chicken c=(Chicken)obj ;
+        return this.id !=null && this.id.equals(c.getId());
+    }
 }
