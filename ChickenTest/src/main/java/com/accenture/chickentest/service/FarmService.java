@@ -1,12 +1,15 @@
 package com.accenture.chickentest.service;
 
 import com.accenture.chickentest.domain.dao.Chicken;
+import com.accenture.chickentest.domain.dao.Egg;
 import com.accenture.chickentest.domain.dao.Farm;
 import com.accenture.chickentest.domain.dto.ChickenDTO;
+import com.accenture.chickentest.domain.dto.EggDTO;
 import com.accenture.chickentest.domain.dto.FarmDTO;
 import com.accenture.chickentest.exception.ObjectNotFoundException;
 import com.accenture.chickentest.mapper.ModelMapper;
 
+import com.accenture.chickentest.repository.EggRepository;
 import com.accenture.chickentest.repository.FarmRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +31,12 @@ public class FarmService {
                 .collect(Collectors.toList());
 
     }
+    public List<FarmDTO> getFarms() {
 
+        return farmRepository.findAll().stream().map(farmDTO -> ModelMapper.INSTANCE.daoToDTOFarm(farmDTO))
+                .collect(Collectors.toList());
+
+    }
     public FarmDTO getFarm(long id) {
         FarmDTO farmDTO=new FarmDTO();
         Farm farm = farmRepository.findById(id)
@@ -36,6 +44,23 @@ public class FarmService {
 
         if(farm.getId() !=  null)
             farmDTO = ModelMapper.INSTANCE.daoToDTOFarm(farm);
+
+        return farmDTO;
+
+
+
+    }
+
+    public FarmDTO getFarmIdByName(String name) {
+        FarmDTO farmDTO=new FarmDTO();
+        Farm farm = farmRepository.findByName(name);
+
+        if(farm.getId() !=  null)
+            farmDTO = ModelMapper.INSTANCE.daoToDTOFarm(farm);
+
+        else {
+            new ObjectNotFoundException("No existe farm");
+        }
 
         return farmDTO;
 
@@ -52,9 +77,26 @@ public class FarmService {
         return new ResponseEntity<>(HttpStatus.CREATED);
 
     }
-  /*  public Object save(Farm dbfarm) {
-    }*/
-    //transformar huevo a pollo
 
-    //mostrar informacion granja completa
+    public ResponseEntity<FarmDTO> update(long id,FarmDTO farmDTO) {
+        Farm farmDTORequest = ModelMapper.INSTANCE.DTOtoDaoFarm(farmDTO);
+
+        Farm farm = farmRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("No existe id seleccionado, no se puede modificar"));
+        farm.setName(farmDTORequest.getName());
+        farm.setEstimate(farmDTORequest.getEstimate());
+        farmRepository.save(farm);
+        return new ResponseEntity<FarmDTO>(HttpStatus.OK);
+
+    }
+
+
+    public ResponseEntity<FarmDTO>  deleteFarm(long id) {
+        Farm farm = farmRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("No existe id seleccionado, no se puede eliminar"));
+        farmRepository.delete(farm);
+        return  new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
 }

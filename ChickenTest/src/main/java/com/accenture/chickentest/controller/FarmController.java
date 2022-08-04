@@ -1,6 +1,5 @@
 package com.accenture.chickentest.controller;
-import com.accenture.chickentest.domain.dao.Chicken;
-import com.accenture.chickentest.domain.dao.Farm;
+
 import com.accenture.chickentest.domain.dto.FarmDTO;
 import com.accenture.chickentest.service.FarmService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +18,6 @@ public class FarmController {
     @Autowired
     private FarmService farmService;
 
-/*    @GetMapping()
-    @ResponseStatus(HttpStatus.OK)
-    public List<FarmDTO> getAllFarms() {
-
-        return farmService.getFarm();
-    }*/
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<FarmDTO> getAllFarms(){
@@ -33,25 +25,37 @@ public class FarmController {
 
         return farmService.getFarm();
     }
+
+
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public FarmDTO getFarm(@PathVariable Long id){
 
-
         return farmService.getFarm(id);
     }
+    @GetMapping("/getFarmByName/{name}")
+    @ResponseStatus(HttpStatus.OK)
+    public FarmDTO getFarmByName(@PathVariable(name = "name") String name){
 
-   @PutMapping("/{id}/asignarchickens")
-    public List<FarmDTO>  asignarChickens(@RequestBody List<Chicken> chickens,@PathVariable Long id)
-    {
-        FarmDTO f = this.farmService.getFarm(id);
-
-
-        chickens.forEach(c ->{
-            f.addChicken(c);
-        });
-        this.farmService.save(f);
-
-        return farmService.getFarm();
+        return farmService.getFarmIdByName(name);
     }
+    @PostMapping
+    public ResponseEntity<FarmDTO> createFarm(@RequestBody FarmDTO farmDTO) {
+
+        return farmService.save(farmDTO);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<FarmDTO> updateFarm(@PathVariable long id, @RequestBody FarmDTO farmDTO) {
+
+        return farmService.update(id,farmDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<FarmDTO>  deleteFarm(@PathVariable(name = "id") Long id) {
+        return  farmService.deleteFarm(id);
+    }
+
+
+
 }

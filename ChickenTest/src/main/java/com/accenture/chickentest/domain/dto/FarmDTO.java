@@ -20,7 +20,7 @@ public class FarmDTO {
     @JsonProperty("name")
     private String name;
 
-    @Transient
+//    @Transient
     private List<Chicken> chickens;
   /*  @Transient
     private List<Egg> eggs;*/
@@ -61,13 +61,13 @@ public class FarmDTO {
         this.name = name;
     }
 
-    public List<Chicken> getChickens() {
-        return chickens;
-    }
-
-    public void setChickens(List<Chicken> chickens) {
-        this.chickens = chickens;
-    }
+//    public List<Chicken> getChickens() {
+//        return chickens;
+//    }
+//
+//    public void setChickens(List<Chicken> chickens) {
+//        this.chickens = chickens;
+//    }
 
 /*    public List<Egg> getEggs() {
         return eggs;

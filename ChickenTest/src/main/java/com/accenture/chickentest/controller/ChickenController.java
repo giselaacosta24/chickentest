@@ -37,6 +37,17 @@ public class ChickenController {
 
         return chickenService.getChicken(id);
     }
+
+    @GetMapping("/chickensfree")
+    public List<ChickenDTO> getChickensWithOutFarm() {
+
+        return chickenService.getChickensWithOutFarm();
+    }
+    @GetMapping("/chickensFarm/{id}")
+    public List<ChickenDTO> getChickensWithFarm(@PathVariable long id) {
+
+        return chickenService.getChickensWithFarm(id);
+    }
   @PutMapping("/{id}")
    public ResponseEntity<ChickenDTO> updateChicken(@PathVariable long id, @RequestBody ChickenDTO chickenDTO) {
 

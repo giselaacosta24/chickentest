@@ -2,6 +2,7 @@ package com.accenture.chickentest.service;
 
 import com.accenture.chickentest.domain.dao.Chicken;
 import com.accenture.chickentest.domain.dto.ChickenDTO;
+import com.accenture.chickentest.domain.dto.FarmDTO;
 import com.accenture.chickentest.exception.ObjectNotFoundException;
 import com.accenture.chickentest.mapper.ModelMapper;
 import com.accenture.chickentest.repository.ChickenRepository;
@@ -9,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,6 +29,36 @@ public class ChickenService {
 
         return chickenRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOChicken)
                 .collect(Collectors.toList());
+
+    }
+
+
+    public List<ChickenDTO> getChickensWithOutFarm() {
+        List<ChickenDTO> chickens=chickenRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOChicken)
+                .collect(Collectors.toList());
+        List<ChickenDTO> chickenswithoutfarm=new ArrayList<ChickenDTO>();
+        chickens.forEach(c -> {
+            if(c.getIdFarm()==null) {
+
+                chickenswithoutfarm.add(c);
+            }
+        });
+        return chickenswithoutfarm;
+
+    }
+
+
+    public List<ChickenDTO> getChickensWithFarm(Long id) {
+        List<ChickenDTO> chickens=chickenRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOChicken)
+                .collect(Collectors.toList());
+        List<ChickenDTO> chickenswithfarm=new ArrayList<ChickenDTO>();
+        chickens.forEach(c -> {
+            if(c.getIdFarm()==id) {
+
+                chickenswithfarm.add(c);
+            }
+        });
+        return chickenswithfarm;
 
     }
 
@@ -77,4 +110,6 @@ public class ChickenService {
         return  new ResponseEntity<>(HttpStatus.OK);
 
    }
+
+
 }
