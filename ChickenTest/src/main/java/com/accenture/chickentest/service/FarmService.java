@@ -89,7 +89,23 @@ public class FarmService {
         return new ResponseEntity<FarmDTO>(HttpStatus.OK);
 
     }
+    public ResponseEntity<FarmDTO> updateAmount(long id,FarmDTO farmDTO,double number) {
 
+        Farm farmDTORequest = ModelMapper.INSTANCE.DTOtoDaoFarm(farmDTO);
+
+        Farm farm = farmRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("No existe id seleccionado, no se puede modificar"));
+        double estimate=farm.getEstimate();
+        double amount=estimate-number;
+
+
+        farm.setName(farmDTORequest.getName());
+        farm.setEstimate(amount);
+
+        farmRepository.save(farm);
+        return new ResponseEntity<FarmDTO>(HttpStatus.OK);
+
+    }
 
     public ResponseEntity<FarmDTO>  deleteFarm(long id) {
         Farm farm = farmRepository.findById(id)

@@ -14,11 +14,17 @@ public class EggDTO {
 
     @JsonProperty("amountDays")
     private Long amountDays;
+
+    @JsonProperty("idFarm")
+    private Long idFarm;
     public EggDTO(){}
-    public EggDTO(Long id, double price, Long amountDays) {
+
+
+    public EggDTO(Long id, double price, Long amountDays, Long idFarm) {
         this.id = id;
         this.price = price;
         this.amountDays = amountDays;
+        this.idFarm = idFarm;
     }
 
     public Long getId() {
@@ -44,5 +50,13 @@ public class EggDTO {
 
     public void setAmountDays(Long amountDays) {
         this.amountDays = amountDays;
+    }
+
+    public Long getIdFarm() {
+        return idFarm;
+    }
+
+    public void setIdFarm(Long idFarm) {
+        this.idFarm = idFarm;
     }
 }

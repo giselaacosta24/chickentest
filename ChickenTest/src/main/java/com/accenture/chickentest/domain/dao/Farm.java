@@ -23,30 +23,17 @@ public class Farm {
 
     @JsonProperty("name")
     private String name;
- /*   @OneToMany
-    private List<Chicken> chickens;*/
- /*   @Transient
-    private List<Egg> eggs;*/
 
     @JsonProperty("estimate")
     private double estimate;
     public Farm(){
-//        this.eggs=new ArrayList<>();
-//       this.chickens=new ArrayList<>();
+
     }
 
-/*    public Farm(Long id, String name, List<Chicken> chickens, List<Egg> eggs, double estimate) {
-        this.id = id;
-        this.name = name;
-        this.chickens = chickens;
-        this.eggs = eggs;
-        this.estimate = estimate;
-    }*/
 
     public Farm(Long id, String name, double estimate) {
         this.id = id;
         this.name = name;
-//        this.chickens = chickens;
         this.estimate = estimate;
     }
 
@@ -66,26 +53,8 @@ public class Farm {
         this.name = name;
     }
 
-/*
-   public List<Chicken> getChickens() {
-        return chickens;
-    }
-*/
 
-/*
-    public void setChickens(List<Chicken> chickens) {
-        this.chickens = chickens;
-    }
-*/
 
-/*     public List<Egg> getEggs() {
-        return eggs;
-    }
-
-    public void setEggs(List<Egg> eggs) {
-        this.eggs = eggs;
-    }
-*/
     public double getEstimate() {
         return estimate;
     }
@@ -98,9 +67,7 @@ public class Farm {
 
 
 
-   /* public void addChicken(Chicken chicken){
-        this.chickens.add(chicken);
-    }*/
+
 }
 
 

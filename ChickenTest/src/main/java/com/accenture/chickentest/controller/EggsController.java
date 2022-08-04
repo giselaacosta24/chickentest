@@ -1,6 +1,7 @@
 package com.accenture.chickentest.controller;
 
 
+import com.accenture.chickentest.domain.dto.ChickenDTO;
 import com.accenture.chickentest.service.EggService;
 import com.accenture.chickentest.domain.dto.EggDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +48,14 @@ public class EggsController {
         return  eggService.deleteEgg(id);
     }
 
+    @GetMapping("/eggsfree")
+    public List<EggDTO> getEggsWithOutFarm() {
 
+        return eggService.getEggsWithOutFarm();
+    }
+    @GetMapping("/eggsFarm/{id}")
+    public List<EggDTO> getEggsWithFarm(@PathVariable long id) {
+
+        return eggService.getEggsWithFarm(id);
+    }
 }

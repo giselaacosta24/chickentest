@@ -1,6 +1,7 @@
 package com.accenture.chickentest.service;
 
 import com.accenture.chickentest.domain.dao.Egg;
+import com.accenture.chickentest.domain.dto.ChickenDTO;
 import com.accenture.chickentest.exception.ObjectNotFoundException;
 import com.accenture.chickentest.mapper.ModelMapper;
 import com.accenture.chickentest.repository.EggRepository;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -70,6 +72,8 @@ public class EggService {
     }
 
 
+
+
     public ResponseEntity<EggDTO>  deleteEgg(long id) {
         Egg egg = eggRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("No existe id seleccionado, no se puede eliminar"));
@@ -78,6 +82,35 @@ public class EggService {
 
     }
 
+
+    public List<EggDTO> getEggsWithOutFarm() {
+        List<EggDTO> eggs=eggRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOEgg)
+                .collect(Collectors.toList());
+        List<EggDTO> eggswithoutfarm=new ArrayList<EggDTO>();
+        eggs.forEach(e -> {
+            if(e.getIdFarm()==null) {
+
+                eggswithoutfarm.add(e);
+            }
+        });
+        return eggswithoutfarm;
+
+    }
+
+
+    public List<EggDTO> getEggsWithFarm(Long id) {
+        List<EggDTO> eggs=eggRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOEgg)
+                .collect(Collectors.toList());
+        List<EggDTO> eggswithfarm=new ArrayList<EggDTO>();
+        eggs.forEach(e -> {
+            if(e.getIdFarm()==id) {
+
+                eggswithfarm.add(e);
+            }
+        });
+        return eggswithfarm;
+
+    }
 
 
 }

@@ -56,6 +56,13 @@ public class FarmController {
         return  farmService.deleteFarm(id);
     }
 
+    @PutMapping("/{id}/{number}")
+    public ResponseEntity<FarmDTO> updateAmount(@PathVariable long id,@PathVariable double number, @RequestBody FarmDTO farmDTO) {
+        {
 
+            return this.farmService.updateAmount(id,farmDTO,number);
+
+        }
+    }
 
 }
