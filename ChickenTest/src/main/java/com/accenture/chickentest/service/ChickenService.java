@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -53,7 +54,7 @@ public class ChickenService {
                 .collect(Collectors.toList());
         List<ChickenDTO> chickenswithfarm=new ArrayList<ChickenDTO>();
         chickens.forEach(c -> {
-            if(c.getIdFarm()==id) {
+            if(Objects.equals(c.getIdFarm(), id)) {
 
                 chickenswithfarm.add(c);
             }

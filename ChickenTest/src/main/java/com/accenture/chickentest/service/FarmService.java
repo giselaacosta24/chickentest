@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 @Service
@@ -89,18 +90,33 @@ public class FarmService {
         return new ResponseEntity<FarmDTO>(HttpStatus.OK);
 
     }
-    public ResponseEntity<FarmDTO> updateAmount(long id,FarmDTO farmDTO,double number) {
+    public ResponseEntity<FarmDTO> updateAmount(String tipo,long id,FarmDTO farmDTO,double number) {
+
+
 
         Farm farmDTORequest = ModelMapper.INSTANCE.DTOtoDaoFarm(farmDTO);
 
         Farm farm = farmRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("No existe id seleccionado, no se puede modificar"));
         double estimate=farm.getEstimate();
-        double amount=estimate-number;
+//        double amount=0;
+        if(Objects.equals(tipo, "compra")) {
+            double amount = estimate - number;
+            farm.setEstimate(amount);
 
+        }
+         else if(Objects.equals(tipo, "venta")) {
+            double amount = estimate + number;
+            farm.setEstimate(amount);
+
+        }
+         else{
+            double amount = estimate;
+            farm.setEstimate(amount);
+
+        }
 
         farm.setName(farmDTORequest.getName());
-        farm.setEstimate(amount);
 
         farmRepository.save(farm);
         return new ResponseEntity<FarmDTO>(HttpStatus.OK);

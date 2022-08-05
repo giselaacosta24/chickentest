@@ -56,13 +56,16 @@ public class FarmController {
         return  farmService.deleteFarm(id);
     }
 
-    @PutMapping("/{id}/{number}")
-    public ResponseEntity<FarmDTO> updateAmount(@PathVariable long id,@PathVariable double number, @RequestBody FarmDTO farmDTO) {
+    @PutMapping("/{tipo}/{id}/{number}")
+    public ResponseEntity<FarmDTO> updateAmount(@PathVariable String tipo,@PathVariable long id,@PathVariable double number, @RequestBody FarmDTO farmDTO) {
         {
 
-            return this.farmService.updateAmount(id,farmDTO,number);
+            return this.farmService.updateAmount(tipo,id,farmDTO,number);
 
         }
     }
+
+
+
 
 }
