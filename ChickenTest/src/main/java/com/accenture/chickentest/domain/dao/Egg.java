@@ -24,7 +24,27 @@ public class Egg {
 
     @JsonProperty("idFarm")
     private Long idFarm;
+
+    @JsonProperty("status")
+    private eggStatus status;
+    public enum eggStatus {
+        NACIDO,
+        COMPRADO,
+        VENDIDO,
+        CONVERTIDO;
+    }
+
+
+
     public Egg(){}
+
+    public Egg(Long id, double price, Long amountDays, Long idFarm, eggStatus status) {
+        this.id = id;
+        this.price = price;
+        this.amountDays = amountDays;
+        this.idFarm = idFarm;
+        this.status = status;
+    }
 
     public Egg(Long id, double price, Long amountDays, Long idFarm) {
         this.id = id;
@@ -40,6 +60,8 @@ public class Egg {
     public void setIdFarm(Long idFarm) {
         this.idFarm = idFarm;
     }
+
+
 
     public Long getId() {
         return id;
@@ -66,7 +88,13 @@ public class Egg {
         this.amountDays = amountDays;
     }
 
+    public void setStatus(eggStatus status) {
+        this.status = status;
+    }
 
+    public eggStatus getStatus() {
+        return status;
+    }
 
 
 }

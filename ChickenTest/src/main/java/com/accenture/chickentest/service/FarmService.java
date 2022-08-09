@@ -99,7 +99,6 @@ public class FarmService {
         Farm farm = farmRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("No existe id seleccionado, no se puede modificar"));
         double estimate=farm.getEstimate();
-//        double amount=0;
         if(Objects.equals(tipo, "compra")) {
             double amount = estimate - number;
             farm.setEstimate(amount);
@@ -111,16 +110,22 @@ public class FarmService {
 
         }
          else{
-            double amount = estimate;
-            farm.setEstimate(amount);
+            farm.setEstimate(estimate);
 
         }
+         farm.setName(farmDTORequest.getName());
 
-        farm.setName(farmDTORequest.getName());
 
-        farmRepository.save(farm);
-        return new ResponseEntity<FarmDTO>(HttpStatus.OK);
 
+        if(farm.getEstimate()> 0 ) {
+
+            farmRepository.save(farm);
+            return new ResponseEntity<FarmDTO>(HttpStatus.OK);
+        }
+        else
+        {
+           throw new RuntimeException("Amount not available");
+        }
     }
 
     public ResponseEntity<FarmDTO>  deleteFarm(long id) {

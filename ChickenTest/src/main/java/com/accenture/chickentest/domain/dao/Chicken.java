@@ -26,6 +26,15 @@ public class Chicken {
     @JsonProperty("idFarm")
     private Long idFarm;
 
+    @JsonProperty("status")
+    private Chicken.chickenStatus status;
+    public enum chickenStatus {
+        NACIDO,
+        COMPRADO,
+        VENDIDO,
+        MUERTO;
+    }
+
     public Chicken(){}
 
     public Chicken(Long id, double price, Long amountDays, Long idFarm) {
@@ -33,6 +42,14 @@ public class Chicken {
         this.price = price;
         this.amountDays = amountDays;
         this.idFarm = idFarm;
+    }
+
+    public Chicken(Long id, double price, Long amountDays, Long idFarm, chickenStatus status) {
+        this.id = id;
+        this.price = price;
+        this.amountDays = amountDays;
+        this.idFarm = idFarm;
+        this.status = status;
     }
 
     public Long getId() {
@@ -78,5 +95,13 @@ public class Chicken {
         }
         Chicken c=(Chicken)obj ;
         return this.id !=null && this.id.equals(c.getId());
+    }
+
+    public chickenStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(chickenStatus status) {
+        this.status = status;
     }
 }
