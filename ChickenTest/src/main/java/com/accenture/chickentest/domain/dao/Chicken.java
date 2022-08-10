@@ -1,6 +1,7 @@
 package com.accenture.chickentest.domain.dao;
 
 
+import com.accenture.chickentest.domain.enumStatus.Status;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.Entity;
@@ -27,13 +28,8 @@ public class Chicken {
     private Long idFarm;
 
     @JsonProperty("status")
-    private Chicken.chickenStatus status;
-    public enum chickenStatus {
-        NACIDO,
-        COMPRADO,
-        VENDIDO,
-        MUERTO;
-    }
+    private Status status;
+
 
     public Chicken(){}
 
@@ -44,7 +40,7 @@ public class Chicken {
         this.idFarm = idFarm;
     }
 
-    public Chicken(Long id, double price, Long amountDays, Long idFarm, chickenStatus status) {
+    public Chicken(Long id, double price, Long amountDays, Long idFarm, Status status) {
         this.id = id;
         this.price = price;
         this.amountDays = amountDays;
@@ -97,11 +93,11 @@ public class Chicken {
         return this.id !=null && this.id.equals(c.getId());
     }
 
-    public chickenStatus getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(chickenStatus status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 }

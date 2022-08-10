@@ -2,7 +2,6 @@ package com.accenture.chickentest.controller;
 
 import com.accenture.chickentest.domain.dto.ChickenDTO;
 import com.accenture.chickentest.domain.dto.EggDTO;
-import com.accenture.chickentest.domain.dto.FarmDTO;
 import com.accenture.chickentest.service.BuySellService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,6 @@ public class BuySellController {
     @PutMapping("/buyChicken/{id}")
     public ResponseEntity<ChickenDTO> comprarChickens(@RequestBody ChickenDTO chickenDTO, @PathVariable long id)
     {
-
       return this.buySellService.buyChicken(chickenDTO,id);
 
     }

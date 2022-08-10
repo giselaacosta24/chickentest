@@ -1,5 +1,7 @@
 package com.accenture.chickentest.domain.dto;
 
+import com.accenture.chickentest.domain.dao.Chicken;
+import com.accenture.chickentest.domain.enumStatus.Status;
 import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -15,7 +17,11 @@ public class ChickenDTO {
 
     @JsonProperty("idFarm")
     private Long idFarm;
+
+    @JsonProperty("status")
+    private Status status;
 public ChickenDTO(){}
+
 
     public ChickenDTO(Long id, double price, Long amountDays, Long idFarm) {
         this.id = id;
@@ -55,4 +61,14 @@ public ChickenDTO(){}
     public void setIdFarm(Long idFarm) {
         this.idFarm = idFarm;
     }
+
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
 }
