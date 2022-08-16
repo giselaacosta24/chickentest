@@ -2,7 +2,7 @@ package com.accenture.chickentest.service;
 
 import com.accenture.chickentest.domain.dao.Chicken;
 import com.accenture.chickentest.domain.dto.ChickenDTO;
-import com.accenture.chickentest.domain.dto.FarmDTO;
+import com.accenture.chickentest.domain.enumStatus.Status;
 import com.accenture.chickentest.exception.ObjectNotFoundException;
 import com.accenture.chickentest.mapper.ModelMapper;
 import com.accenture.chickentest.repository.ChickenRepository;
@@ -10,10 +10,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.Temporal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,7 +40,7 @@ public class ChickenService {
     public List<ChickenDTO> getChickensWithOutFarm() {
         List<ChickenDTO> chickens=chickenRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOChicken)
                 .collect(Collectors.toList());
-        List<ChickenDTO> chickenswithoutfarm=new ArrayList<ChickenDTO>();
+        List<ChickenDTO> chickenswithoutfarm= new ArrayList<>();
         chickens.forEach(c -> {
             if(c.getIdFarm()==null) {
 
@@ -52,9 +55,10 @@ public class ChickenService {
     public List<ChickenDTO> getChickensWithFarm(Long id) {
         List<ChickenDTO> chickens=chickenRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOChicken)
                 .collect(Collectors.toList());
-        List<ChickenDTO> chickenswithfarm=new ArrayList<ChickenDTO>();
+        List<ChickenDTO> chickenswithfarm= new ArrayList<>();
         chickens.forEach(c -> {
-            if(Objects.equals(c.getIdFarm(), id)) {
+            if(Objects.equals(c.getIdFarm(), id) && ((c.getStatus() == Status.COMPRADO)||(c.getStatus() == Status.CONVERTIDO) ))
+            {
 
                 chickenswithfarm.add(c);
             }
@@ -70,6 +74,8 @@ public class ChickenService {
 
         // convert DTO to Entity
         Chicken chicken =  ModelMapper.INSTANCE.DTOtoDaoChicken(chickenDTO);
+
+
         chickenRepository.save(chicken);
 
        return new ResponseEntity<>(HttpStatus.CREATED);
@@ -84,7 +90,7 @@ public class ChickenService {
         if(chicken.getId() !=  null)
             chickenDTO = ModelMapper.INSTANCE.daoToDTOChicken(chicken);
 
-            return chickenDTO;
+        return chickenDTO;
 
 
 

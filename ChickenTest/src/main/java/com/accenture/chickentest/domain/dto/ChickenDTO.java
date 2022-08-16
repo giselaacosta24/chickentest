@@ -1,9 +1,11 @@
 package com.accenture.chickentest.domain.dto;
 
-import com.accenture.chickentest.domain.dao.Chicken;
+
 import com.accenture.chickentest.domain.enumStatus.Status;
 import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Date;
 
 @Data
 public class ChickenDTO {
@@ -20,6 +22,14 @@ public class ChickenDTO {
 
     @JsonProperty("status")
     private Status status;
+    @JsonProperty("sexo")
+    private Boolean sexo;
+
+
+    @JsonProperty("dateFarm")
+    private Date dateFarm;
+
+
 public ChickenDTO(){}
 
 
@@ -71,4 +81,20 @@ public ChickenDTO(){}
         this.status = status;
     }
 
+    public Boolean getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(Boolean sexo) {
+        this.sexo = sexo;
+    }
+
+
+    public Date getDateFarm() {
+        return dateFarm;
+    }
+
+    public void setDateFarm(Date dateFarm) {
+        this.dateFarm = dateFarm;
+    }
 }

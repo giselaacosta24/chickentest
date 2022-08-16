@@ -6,6 +6,8 @@ import com.accenture.chickentest.domain.enumStatus.Status;
 import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Date;
+
 
 @Data
 public class EggDTO {
@@ -23,6 +25,8 @@ public class EggDTO {
     @JsonProperty("status")
     private Status status;
 
+    @JsonProperty("dateFarm")
+    private Date dateFarm;
 
     public EggDTO(){}
 
@@ -73,5 +77,13 @@ public class EggDTO {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Date getDateFarm() {
+        return dateFarm;
+    }
+
+    public void setDateFarm(Date dateFarm) {
+        this.dateFarm = dateFarm;
     }
 }

@@ -36,6 +36,21 @@ public class TransactionService {
         return transactionsBuys;
 
     }
+    public List<TransactionDTO> getTransactionsSells()
+    {
+        List<TransactionDTO> transactionsList= transactionRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOTransaction)
+                .collect(Collectors.toList());
+
+
+        List<TransactionDTO> transactionsSells=new ArrayList<TransactionDTO>();
+        transactionsList.forEach(t -> {
+            if(Objects.equals(t.getTypeTransaction(), "Venta")) {
+
+                transactionsSells.add(t);
+            }
+        });
+        return transactionsSells;
+    }
 
 
     public double  getAmountBuys()
@@ -54,7 +69,6 @@ public class TransactionService {
         return amountAll.get();
 
     }
-
     public double  getAmountSells()
     {
         List<TransactionDTO> transactionsSells= transactionRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOTransaction)
@@ -71,20 +85,21 @@ public class TransactionService {
         return amountAll.get();
 
     }
-    public List<TransactionDTO> getTransactionsSells()
+
+    public int  getNumberTransactions(String transaction,String product)
     {
-        List<TransactionDTO> transactionsList= transactionRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOTransaction)
+        List<TransactionDTO> transactionsChickenBuys= transactionRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOTransaction)
                 .collect(Collectors.toList());
 
+            int numberTransactions = (int) transactionsChickenBuys.stream().filter(t -> Objects.equals(t.getTypeTransaction(), transaction) && Objects.equals(t.getTypeProduct(), product)).count();
 
-        List<TransactionDTO> transactionsSells=new ArrayList<TransactionDTO>();
-        transactionsList.forEach(t -> {
-            if(Objects.equals(t.getTypeTransaction(), "Venta")) {
+        return numberTransactions;
 
-                transactionsSells.add(t);
-            }
-        });
-        return transactionsSells;
+
     }
+
+
+
+
 
 }

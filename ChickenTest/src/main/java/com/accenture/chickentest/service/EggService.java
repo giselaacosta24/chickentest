@@ -2,6 +2,7 @@ package com.accenture.chickentest.service;
 
 import com.accenture.chickentest.domain.dao.Egg;
 import com.accenture.chickentest.domain.dto.ChickenDTO;
+import com.accenture.chickentest.domain.enumStatus.Status;
 import com.accenture.chickentest.exception.ObjectNotFoundException;
 import com.accenture.chickentest.mapper.ModelMapper;
 import com.accenture.chickentest.repository.EggRepository;
@@ -104,7 +105,7 @@ public class EggService {
                 .collect(Collectors.toList());
         List<EggDTO> eggswithfarm=new ArrayList<EggDTO>();
         eggs.forEach(e -> {
-            if(Objects.equals(e.getIdFarm(), id)) {
+            if(Objects.equals(e.getIdFarm(), id)  && (e.getStatus() == Status.COMPRADO)) {
 
                 eggswithfarm.add(e);
             }

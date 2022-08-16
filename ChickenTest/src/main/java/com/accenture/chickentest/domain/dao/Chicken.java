@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Date;
 
 @Entity
 public class Chicken {
@@ -29,7 +30,10 @@ public class Chicken {
 
     @JsonProperty("status")
     private Status status;
-
+    @JsonProperty("sexo")
+    private Boolean sexo;
+    @JsonProperty("dateFarm")
+    private Date dateFarm;
 
     public Chicken(){}
 
@@ -81,6 +85,8 @@ public class Chicken {
         this.idFarm = idFarm;
     }
 
+
+
     @Override
     public boolean equals(Object obj) {
         if(this == obj){
@@ -99,5 +105,20 @@ public class Chicken {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Boolean getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(Boolean sexo) {
+        this.sexo = sexo;
+    }
+    public Date getDateFarm() {
+        return dateFarm;
+    }
+
+    public void setDateFarm(Date dateFarm) {
+        this.dateFarm = dateFarm;
     }
 }

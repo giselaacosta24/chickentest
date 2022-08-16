@@ -50,4 +50,17 @@ public class TransactionController {
         return transactionService.getAmountSells();
     }
 
+
+
+
+    @GetMapping("/{typetransaccion}/{typeproduct}")
+    @ResponseStatus(HttpStatus.OK)
+    public int getAllNumbers(@PathVariable String typetransaccion,@PathVariable String typeproduct){
+
+
+        return transactionService.getNumberTransactions(typetransaccion,typeproduct);
+    }
+
+
+
 }

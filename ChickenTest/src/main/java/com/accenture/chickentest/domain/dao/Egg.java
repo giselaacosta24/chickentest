@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Date;
 
 @Entity
 public class Egg {
@@ -29,6 +30,10 @@ public class Egg {
     @JsonProperty("status")
     private Status status;
 
+
+
+    @JsonProperty("dateFarm")
+    private Date dateFarm;
 
 
     public Egg(){}
@@ -91,6 +96,12 @@ public class Egg {
         return status;
     }
 
+    public Date getDateFarm() {
+        return dateFarm;
+    }
 
+    public void setDateFarm(Date dateFarm) {
+        this.dateFarm = dateFarm;
+    }
 }
 

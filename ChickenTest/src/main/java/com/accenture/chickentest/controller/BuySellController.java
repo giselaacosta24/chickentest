@@ -33,8 +33,8 @@ public class BuySellController {
 
 
 
-    @DeleteMapping("/sellChicken/{id}")
-    public ResponseEntity<ChickenDTO> venderChickens(@PathVariable(name = "id") Long id)
+    @PutMapping("/sellChicken/{id}")
+    public ResponseEntity<ChickenDTO> venderChickens(@RequestBody ChickenDTO chickenDTO,@PathVariable(name = "id") Long id)
     {
 
         return this.buySellService.sellChicken(id);
@@ -42,8 +42,8 @@ public class BuySellController {
     }
 
 
-    @DeleteMapping("/sellEgg/{id}")
-    public ResponseEntity<EggDTO> venderEggs(@PathVariable(name = "id") Long id)
+    @PutMapping("/sellEgg/{id}")
+    public ResponseEntity<EggDTO> venderEggs(@RequestBody EggDTO eggDTO,@PathVariable(name = "id") Long id)
     {
 
         return this.buySellService.sellEgg(id);

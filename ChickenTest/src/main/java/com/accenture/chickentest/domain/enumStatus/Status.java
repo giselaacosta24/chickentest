@@ -4,5 +4,7 @@ public enum Status {
     NACIDO,
     COMPRADO,
     VENDIDO,
-    CONVERTIDO;
+    CONVERTIDO,
+
+    MUERTO;
 }
