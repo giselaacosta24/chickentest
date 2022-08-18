@@ -3,7 +3,6 @@ package com.accenture.chickentest.controller;
 
 import com.accenture.chickentest.domain.dto.ChickenDTO;
 import com.accenture.chickentest.domain.dto.EggDTO;
-import com.accenture.chickentest.service.TransactionService;
 import com.accenture.chickentest.service.TransformationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

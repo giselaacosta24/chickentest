@@ -10,6 +10,10 @@ import com.accenture.chickentest.domain.enumStatus.Status;
 import com.accenture.chickentest.mapper.ModelMapper;
 import com.accenture.chickentest.repository.ChickenRepository;
 import com.accenture.chickentest.repository.EggRepository;
+import org.springframework.batch.core.StepContribution;
+import org.springframework.batch.core.scope.context.ChunkContext;
+import org.springframework.batch.core.step.tasklet.Tasklet;
+import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -32,6 +36,7 @@ public class TransformationService {
     }
 
     public ResponseEntity<EggDTO> eggToChicken(Long id) {
+        System.out.println("ingrese a servicio");
         List<EggDTO> eggs=eggRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOEgg)
                 .collect(Collectors.toList());
         List<EggDTO> eggsTotal= new ArrayList<>();
@@ -95,4 +100,6 @@ chickenRepository.save(chicken);
         return new ResponseEntity<>(HttpStatus.CREATED);
 
     }
+
+
 }
