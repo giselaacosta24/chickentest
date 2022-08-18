@@ -42,7 +42,7 @@ public class ChickenService {
                 .collect(Collectors.toList());
         List<ChickenDTO> chickenswithoutfarm= new ArrayList<>();
         chickens.forEach(c -> {
-            if(c.getIdFarm()==null) {
+            if(c.getIdFarm()==null && (c.getStatus()==Status.CONVERTIDO || c.getStatus()==null) ){
 
                 chickenswithoutfarm.add(c);
             }
@@ -74,7 +74,7 @@ public class ChickenService {
 
         // convert DTO to Entity
         Chicken chicken =  ModelMapper.INSTANCE.DTOtoDaoChicken(chickenDTO);
-
+        chicken.setAmountDays(0L);
 
         chickenRepository.save(chicken);
 

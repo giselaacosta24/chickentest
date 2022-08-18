@@ -90,7 +90,8 @@ public class EggService {
                 .collect(Collectors.toList());
         List<EggDTO> eggswithoutfarm=new ArrayList<EggDTO>();
         eggs.forEach(e -> {
-            if(e.getIdFarm()==null) {
+            System.out.print(e.getStatus() != Status.VENDIDO);
+            if(e.getIdFarm()==null && e.getStatus() == null)  {
 
                 eggswithoutfarm.add(e);
             }

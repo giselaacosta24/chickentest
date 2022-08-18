@@ -36,7 +36,7 @@ public class TransformationService {
                 .collect(Collectors.toList());
         List<EggDTO> eggsTotal= new ArrayList<>();
         eggs.forEach(e -> {
-            if(Objects.equals(e.getIdFarm(), id)  && (e.getStatus() == Status.COMPRADO)) {
+            if(Objects.equals(e.getIdFarm(), id)  && (e.getStatus() == Status.COMPRADO))  {
             {
 
                 eggsTotal.add(e);
@@ -44,21 +44,21 @@ public class TransformationService {
         }
         });
         eggsTotal.forEach(eg -> {
-            System.out.print(eg.getAmountDays()>30);
-            if(eg.getAmountDays()>30 && eg.getAmountDays() !=null)
+            if(eg.getAmountDays()>30 && eg.getAmountDays() !=null )
             {
-                eg.setStatus(Status.NACIDO);
-                eg.setIdFarm(null);
+
 
                 Egg egg =  ModelMapper.INSTANCE.DTOtoDaoEgg(eg);
                 Chicken chicken=new Chicken();
-                chicken.setAmountDays(0L);
-                chicken.setDateFarm(new Date());
+                chicken.setAmountDays(egg.getAmountDays());
+                chicken.setDateFarm(egg.getDateFarm());
                 chicken.setPrice(egg.getPrice());
                 chicken.setIdFarm(egg.getIdFarm());
                 chicken.setSexo(false);
                 chicken.setStatus(Status.CONVERTIDO);
                 chickenRepository.save(chicken);
+                egg.setStatus(Status.NACIDO);
+                egg.setIdFarm(null);
 
                 eggRepository.save(egg);
             }
@@ -81,7 +81,7 @@ public class TransformationService {
             }
         });
           chickensTotal.forEach(c -> {
-             if(c.getAmountDays() !=null && c.getAmountDays()>100);
+             if( c.getAmountDays()>100);
             {
               c.setStatus(Status.MUERTO);
                 c.setIdFarm(null);
