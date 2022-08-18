@@ -30,5 +30,12 @@ public class TransformationController {
         return this.transformationService.chickenToDead(id);
 
     }
+    @PutMapping("/putEgg/{id}")
+    public ResponseEntity<ChickenDTO> putAnEgg(@PathVariable long id)
+    {
+
+        return this.transformationService.putAnEgg(id);
+
+    }
 }
 

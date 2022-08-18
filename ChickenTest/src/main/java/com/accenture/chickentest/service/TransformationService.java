@@ -108,13 +108,15 @@ chickenRepository.save(chicken);
         chickens.forEach(c -> {
             if(Objects.equals(c.getIdFarm(), id)  && (c.getStatus() == Status.COMPRADO)  && (c.getAmountDays() == 30) && (c.getSexo() == true))  {
                 {
-
+                  System.out.println("Estoy aca");
                     Egg egg=new Egg();
                     egg.setAmountDays(0L);
                     egg.setDateFarm(new Date());
                     egg.setPrice(10);
                     egg.setIdFarm(id);
                     egg.setStatus(Status.PUESTO);
+                    eggRepository.save(egg);
+
                 }
             }
         });

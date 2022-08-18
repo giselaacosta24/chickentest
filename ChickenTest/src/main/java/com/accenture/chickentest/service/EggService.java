@@ -106,7 +106,7 @@ public class EggService {
                 .collect(Collectors.toList());
         List<EggDTO> eggswithfarm=new ArrayList<EggDTO>();
         eggs.forEach(e -> {
-            if(Objects.equals(e.getIdFarm(), id)  && (e.getStatus() == Status.COMPRADO)) {
+            if(Objects.equals(e.getIdFarm(), id)  && ((e.getStatus() == Status.COMPRADO) ||(e.getStatus() == Status.PUESTO))) {
 
                 eggswithfarm.add(e);
             }
