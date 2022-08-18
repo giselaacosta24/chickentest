@@ -6,5 +6,7 @@ public enum Status {
     VENDIDO,
     CONVERTIDO,
 
-    MUERTO;
+    MUERTO,
+
+    PUESTO;
 }

@@ -36,7 +36,6 @@ public class TransformationService {
     }
 
     public ResponseEntity<EggDTO> eggToChicken(Long id) {
-        System.out.println("ingrese a servicio");
         List<EggDTO> eggs=eggRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOEgg)
                 .collect(Collectors.toList());
         List<EggDTO> eggsTotal= new ArrayList<>();
@@ -102,4 +101,27 @@ chickenRepository.save(chicken);
     }
 
 
+
+    public ResponseEntity<ChickenDTO> putAnEgg(Long id) {
+        List<ChickenDTO> chickens=chickenRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOChicken)
+                .collect(Collectors.toList());
+        chickens.forEach(c -> {
+            if(Objects.equals(c.getIdFarm(), id)  && (c.getStatus() == Status.COMPRADO)  && (c.getAmountDays() == 30) && (c.getSexo() == true))  {
+                {
+
+                    Egg egg=new Egg();
+                    egg.setAmountDays(0L);
+                    egg.setDateFarm(new Date());
+                    egg.setPrice(10);
+                    egg.setIdFarm(id);
+                    egg.setStatus(Status.PUESTO);
+                }
+            }
+        });
+
+
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+
+    }
 }
