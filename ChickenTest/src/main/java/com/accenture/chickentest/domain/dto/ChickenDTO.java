@@ -2,6 +2,7 @@ package com.accenture.chickentest.domain.dto;
 
 
 import com.accenture.chickentest.domain.enumStatus.Status;
+import com.lowagie.text.pdf.PdfPCell;
 import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -48,6 +49,7 @@ public ChickenDTO(){}
         this.id = id;
     }
 
+
     public double getPrice() {
         return price;
     }
@@ -71,7 +73,6 @@ public ChickenDTO(){}
     public void setIdFarm(Long idFarm) {
         this.idFarm = idFarm;
     }
-
 
     public Status getStatus() {
         return status;
