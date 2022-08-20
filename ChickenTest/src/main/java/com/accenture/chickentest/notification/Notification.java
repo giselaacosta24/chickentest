@@ -11,11 +11,24 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import  java.util.concurrent.ScheduledThreadPoolExecutor;
+
 
 public class Notification extends Thread {
     private ChickenService chickenService;
 
-    public void run(HttpServletResponse response) throws DocumentException, IOException {
+    TimerTask task = new TimerTask() {
+        public void run() {
+            System.out.println("Task performed on: " + new Date() + "n"
+                    + "Thread's name: " + Thread.currentThread().getName());
+        }
+    };
+    Timer timer = new Timer("Timer");
+    long delay = 1000L;
+//timer.schedule(task, delay);
+   /* public void run(HttpServletResponse response) throws DocumentException, IOException {
         long startTime = System.currentTimeMillis();
         int i = 0;
         while (true) {
@@ -39,6 +52,6 @@ public class Notification extends Thread {
             }
 
         }
-    }
+    }*/
 
 }

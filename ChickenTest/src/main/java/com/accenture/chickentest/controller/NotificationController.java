@@ -5,11 +5,9 @@ import com.accenture.chickentest.service.ChickenService;
 import com.accenture.chickentest.service.NotificationService;
 import com.lowagie.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -24,21 +22,29 @@ public class NotificationController {
 
     @Autowired
     private ChickenService chickenService;
-
-    @GetMapping("/chickens/export/pdf")
+    @Autowired
+    private NotificationService notificationService;
+   @GetMapping("/pdf")
     public void exportToPDF(HttpServletResponse response) throws DocumentException, IOException {
-        response.setContentType("application/pdf");
+    response.setContentType("application/pdf");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
 
         String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=users_" + currentDateTime + ".pdf";
+        String headerValue = "attachment; filename=Reporte-" + currentDateTime + ".pdf";
         response.setHeader(headerKey, headerValue);
-
         List<ChickenDTO> listChickens = chickenService.getChickens();
 
         NotificationService exporter = new NotificationService(listChickens);
+
         exporter.export(response);
+
+   }
+
+    // Sending email with attachment
+    @PostMapping("/sendMail")
+    public void sendMailWithAttachment() throws MessagingException {
+        notificationService.sendMail();
 
     }
 }
