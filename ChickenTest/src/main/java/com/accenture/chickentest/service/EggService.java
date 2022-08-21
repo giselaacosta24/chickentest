@@ -27,8 +27,10 @@ public class EggService {
     private Long priceEgg;
 
 
-    public EggService(EggRepository eggRepository) {
+    public EggService(EggRepository eggRepository,ParametroRepository parametroRepository) {
         this.eggRepository = eggRepository;
+        this.parametroRepository = parametroRepository;
+
     }
 
 
