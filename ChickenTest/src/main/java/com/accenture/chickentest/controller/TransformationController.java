@@ -37,5 +37,14 @@ public class TransformationController {
         return this.transformationService.putAnEgg(id);
 
     }
+
+
+    @PutMapping("/updateDays")
+    public void putAnEgg()
+    {
+
+       this.transformationService.updateDays();
+
+    }
 }
 

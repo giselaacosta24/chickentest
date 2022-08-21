@@ -2,11 +2,13 @@ package com.accenture.chickentest.service;
 
 import com.accenture.chickentest.domain.dao.Egg;
 import com.accenture.chickentest.domain.dto.ChickenDTO;
+import com.accenture.chickentest.domain.dto.ParametroDTO;
 import com.accenture.chickentest.domain.enumStatus.Status;
 import com.accenture.chickentest.exception.ObjectNotFoundException;
 import com.accenture.chickentest.mapper.ModelMapper;
 import com.accenture.chickentest.repository.EggRepository;
 import com.accenture.chickentest.domain.dto.EggDTO;
+import com.accenture.chickentest.repository.ParametroRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,9 @@ public class EggService {
 
 
     private final EggRepository eggRepository;
+    private final ParametroRepository parametroRepository;
+    private Long priceEgg;
+
 
     public EggService(EggRepository eggRepository) {
         this.eggRepository = eggRepository;
@@ -41,6 +46,20 @@ public class EggService {
 
         // convert DTO to Entity
         Egg egg =  ModelMapper.INSTANCE.DTOtoDaoEgg(eggDTO);
+        List<ParametroDTO> parametros = parametroRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOParametro)
+                .collect(Collectors.toList());
+
+        parametros.forEach(p -> {
+            if (Objects.equals(p.getClave(), "PrecioHuevos")) {
+                {
+                    priceEgg = p.getValor();
+
+                }
+            }
+
+        });
+
+        egg.setPrice(priceEgg);
         eggRepository.save(egg);
 
         return new ResponseEntity<EggDTO>(HttpStatus.CREATED);

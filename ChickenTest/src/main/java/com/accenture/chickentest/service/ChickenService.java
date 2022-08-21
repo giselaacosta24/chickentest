@@ -2,10 +2,12 @@ package com.accenture.chickentest.service;
 
 import com.accenture.chickentest.domain.dao.Chicken;
 import com.accenture.chickentest.domain.dto.ChickenDTO;
+import com.accenture.chickentest.domain.dto.ParametroDTO;
 import com.accenture.chickentest.domain.enumStatus.Status;
 import com.accenture.chickentest.exception.ObjectNotFoundException;
 import com.accenture.chickentest.mapper.ModelMapper;
 import com.accenture.chickentest.repository.ChickenRepository;
+import com.accenture.chickentest.repository.ParametroRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,11 +22,14 @@ import java.util.stream.Collectors;
 public class ChickenService {
 
     private final ChickenRepository chickenRepository;
+    private final ParametroRepository parametroRepository;
 
-    public ChickenService(ChickenRepository chickenRepository) {
+    private Long priceChicken;
+
+    public ChickenService(ChickenRepository chickenRepository,ParametroRepository parametroRepository) {
         this.chickenRepository = chickenRepository;
-    }
-
+       this.parametroRepository = parametroRepository;
+}
 
     public List<ChickenDTO> getChickens() {
 
@@ -71,8 +76,19 @@ public class ChickenService {
 
         // convert DTO to Entity
         Chicken chicken =  ModelMapper.INSTANCE.DTOtoDaoChicken(chickenDTO);
-        chicken.setAmountDays(0L);
+        List<ParametroDTO> parametros = parametroRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOParametro)
+                .collect(Collectors.toList());
 
+        parametros.forEach(p -> {
+            if (Objects.equals(p.getClave(), "PrecioPollos")) {
+                {
+                   priceChicken = p.getValor();
+
+                }
+            }
+
+        });
+        chicken.setPrice(priceChicken);
         chickenRepository.save(chicken);
 
        return new ResponseEntity<>(HttpStatus.CREATED);
@@ -100,6 +116,8 @@ public class ChickenService {
                .orElseThrow(() -> new ObjectNotFoundException("No existe id seleccionado, no se puede modificar"));
        chicken.setPrice(chickenDTORequest.getPrice());
        chicken.setAmountDays(chickenDTORequest.getAmountDays());
+       chicken.setSexo(chickenDTORequest.getSexo());
+       chicken.setDateFarm(chickenDTORequest.getDateFarm());
 
        chickenRepository.save(chicken);
        return new ResponseEntity<>(HttpStatus.OK);
