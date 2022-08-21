@@ -2,7 +2,6 @@ package com.accenture.chickentest.domain.dto;
 
 
 import com.accenture.chickentest.domain.enumStatus.Status;
-import com.lowagie.text.pdf.PdfPCell;
 import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

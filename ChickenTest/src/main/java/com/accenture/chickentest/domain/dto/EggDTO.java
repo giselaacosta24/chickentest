@@ -1,7 +1,6 @@
 package com.accenture.chickentest.domain.dto;
 
 
-import com.accenture.chickentest.domain.dao.Egg;
 import com.accenture.chickentest.domain.enumStatus.Status;
 import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonProperty;

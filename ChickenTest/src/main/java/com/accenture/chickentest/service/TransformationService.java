@@ -121,6 +121,9 @@ public class TransformationService {
 
         });
 
+        System.out.println("dias de vida pollo");
+
+        System.out.println(this.daysLifeChicken);
         chickens.forEach(ch -> {
             if (Objects.equals(ch.getIdFarm(), id) && ((ch.getStatus() == Status.COMPRADO)) || (ch.getStatus() == Status.CONVERTIDO)) {
                 {
@@ -129,14 +132,14 @@ public class TransformationService {
                 }
             }
         });
-        chickensTotal.forEach(c -> {
+       chickensTotal.forEach(c -> {
 
             if (c.getAmountDays() >= daysLifeChicken) {
-                c.setStatus(Status.MUERTO);
-                c.setIdFarm(null);
+               c.setStatus(Status.MUERTO);
+               c.setIdFarm(null);
 
-                Chicken chicken = ModelMapper.INSTANCE.DTOtoDaoChicken(c);
-                chickenRepository.save(chicken);
+                  Chicken chicken = ModelMapper.INSTANCE.DTOtoDaoChicken(c);
+               chickenRepository.save(chicken);
 
             }
 
@@ -194,7 +197,7 @@ public class TransformationService {
 
     public void updateDays() {
 
-
+     System.out.println("ingreso a actualizar dias");
         List<EggDTO> eggs = eggRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOEgg)
                 .collect(Collectors.toList());
         List<ChickenDTO> chickens = chickenRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOChicken)

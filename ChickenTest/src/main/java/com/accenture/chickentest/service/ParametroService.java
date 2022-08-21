@@ -1,8 +1,6 @@
 package com.accenture.chickentest.service;
 
-import com.accenture.chickentest.domain.dao.Chicken;
 import com.accenture.chickentest.domain.dao.Parametro;
-import com.accenture.chickentest.domain.dto.ChickenDTO;
 import com.accenture.chickentest.domain.dto.ParametroDTO;
 import com.accenture.chickentest.exception.ObjectNotFoundException;
 import com.accenture.chickentest.mapper.ModelMapper;
@@ -10,8 +8,7 @@ import com.accenture.chickentest.repository.ParametroRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
 
 import java.util.List;
 import java.util.stream.Collectors;

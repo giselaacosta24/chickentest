@@ -98,6 +98,16 @@ public class TransactionService {
 
     }
 
+    public List<TransactionDTO> getTransactions()
+    {
+        List<TransactionDTO> transactionsList= transactionRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOTransaction)
+                .collect(Collectors.toList());
+
+
+
+        return transactionsList;
+    }
+
 
 
 

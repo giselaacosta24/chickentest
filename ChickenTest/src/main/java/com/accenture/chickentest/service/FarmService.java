@@ -22,12 +22,7 @@ public class FarmService {
     public FarmService(FarmRepository farmRepository) {
         this.farmRepository = farmRepository;
     }
-  /*  public List<FarmDTO> getFarm()
-    {
-        return farmRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOFarm)
-                .collect(Collectors.toList());
 
-    }*/
     public List<FarmDTO> getFarms() {
 
         return farmRepository.findAll().stream().map(farmDTO -> ModelMapper.INSTANCE.daoToDTOFarm(farmDTO))

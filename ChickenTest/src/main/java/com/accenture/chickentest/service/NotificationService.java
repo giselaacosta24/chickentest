@@ -2,6 +2,7 @@ package com.accenture.chickentest.service;
 
 import com.accenture.chickentest.domain.dto.ChickenDTO;
 import com.accenture.chickentest.domain.dto.EggDTO;
+import com.accenture.chickentest.domain.dto.TransactionDTO;
 import com.accenture.chickentest.repository.TransactionRepository;
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
@@ -36,7 +37,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 @Service
 public class NotificationService {
 
-    private List<ChickenDTO> listChickens;
+    private List<TransactionDTO> transactions;
 
 
 
@@ -48,9 +49,8 @@ public class NotificationService {
 
 
     }
-    public NotificationService(TransactionRepository transactionRepository){
-        this.transactionRepository = transactionRepository;
-
+    public NotificationService(List<TransactionDTO> transactions){
+        this.transactions=transactions;
 
     }
 
@@ -93,29 +93,32 @@ public class NotificationService {
     private void writeTableHeader(PdfPTable table) {
         PdfPCell cell = new PdfPCell();
         cell.setBackgroundColor(Color.BLUE);
-        cell.setPadding(3);
+        cell.setPadding(4);
 
         Font font = FontFactory.getFont(FontFactory.HELVETICA);
         font.setColor(Color.WHITE);
 
-        cell.setPhrase(new Phrase(" ID", font));
+        cell.setPhrase(new Phrase(" Tipo de Producto", font));
 
         table.addCell(cell);
 
         cell.setPhrase(new Phrase("Precio", font));
         table.addCell(cell);
 
-        cell.setPhrase(new Phrase("Estado", font));
+        cell.setPhrase(new Phrase("Tipo de Transaccion", font));
         table.addCell(cell);
 
+        cell.setPhrase(new Phrase("Fecha de Transaccion", font));
+        table.addCell(cell);
 
     }
 
     private void writeTableData(PdfPTable table) {
-        for (ChickenDTO chicken : listChickens) {
-            table.addCell(String.valueOf(chicken.getId()));
-            table.addCell(String.valueOf(chicken.getStatus()));
-            table.addCell(String.valueOf(chicken.getPrice()));
+        for (TransactionDTO transaction : transactions) {
+            table.addCell(String.valueOf(transaction.getTypeProduct()));
+            table.addCell(String.valueOf(transaction.getPrice()));
+            table.addCell(String.valueOf(transaction.getTypeTransaction()));
+            table.addCell(String.valueOf(transaction.getDateTransaction()));
 
         }
     }
@@ -129,15 +132,17 @@ public class NotificationService {
         font.setSize(18);
         font.setColor(Color.BLUE);
 
-        Paragraph p = new Paragraph("List of Chickens", font);
+        Paragraph p = new Paragraph("Estado de Granja", font);
         p.setAlignment(Paragraph.ALIGN_CENTER);
+
 
         document.add(p);
 
-        PdfPTable table = new PdfPTable(3);
+        PdfPTable table = new PdfPTable(4);
         table.setWidthPercentage(100f);
-        table.setWidths(new float[] {1.5f, 3.5f, 3.0f});
+        table.setWidths(new float[]  {1.5f, 3.5f, 3.0f, 3.0f});
         table.setSpacingBefore(10);
+
 
         writeTableHeader(table);
         writeTableData(table);

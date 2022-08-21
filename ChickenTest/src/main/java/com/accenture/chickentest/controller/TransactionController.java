@@ -24,6 +24,14 @@ public class TransactionController {
 
         return transactionService.getTransactionsBuys();
     }
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<TransactionDTO> getAllTransactions(){
+
+
+        return transactionService.getTransactions();
+    }
+
 
     @GetMapping("/buys/amount")
     @ResponseStatus(HttpStatus.OK)

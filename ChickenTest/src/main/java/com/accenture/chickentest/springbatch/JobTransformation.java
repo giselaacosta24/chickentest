@@ -22,10 +22,11 @@ public class JobTransformation implements Tasklet {
     }
     @Override
         public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-          transformationService.eggToChicken(8L);
-          transformationService.chickenToDead(8L);
-          transformationService.putAnEgg(8L);
-          transformationService.updateDays();
+        transformationService.updateDays();
+        transformationService.eggToChicken(8L);
+        transformationService.chickenToDead(8L);
+        transformationService.putAnEgg(8L);
+
         return RepeatStatus.FINISHED;
 
     }
