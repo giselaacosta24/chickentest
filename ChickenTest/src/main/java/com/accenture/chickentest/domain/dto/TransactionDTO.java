@@ -9,23 +9,23 @@ import java.util.Date;
 @Data
 public class TransactionDTO {
 
-    @JsonProperty("id")
-    private Long id;
+        @JsonProperty("id")
+        private Long id;
 
-    @JsonProperty("typeProduct")
-    private String typeProduct;
-
-
-
-    @JsonProperty("typeTransaction")
-    private String typeTransaction;
-
-    @JsonProperty("price")
-    private double price;
+        @JsonProperty("typeProduct")
+        private String typeProduct;
 
 
-    @JsonProperty("dateTransaction")
-    private Date dateTransaction;
+
+        @JsonProperty("typeTransaction")
+        private String typeTransaction;
+
+        @JsonProperty("price")
+        private double price;
+
+
+        @JsonProperty("dateTransaction")
+        private Date dateTransaction;
 
     public TransactionDTO() {
 

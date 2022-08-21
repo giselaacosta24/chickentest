@@ -1,5 +1,8 @@
 package com.accenture.chickentest;
 
+import com.accenture.chickentest.notification.ThreadClass;
+import com.accenture.chickentest.service.TransactionService;
+import com.accenture.chickentest.service.TransformationService;
 import org.modelmapper.ModelMapper;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
@@ -37,6 +40,9 @@ public class ChickenTestApplication {
     public static void main(String[] args) {
 
         SpringApplication.run(ChickenTestApplication.class, args);
+        ThreadClass t=new ThreadClass();
+        t.start();
+
     }
 
     @Scheduled(cron = "0 */1 * * * ?")

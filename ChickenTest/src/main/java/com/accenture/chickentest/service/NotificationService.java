@@ -2,6 +2,7 @@ package com.accenture.chickentest.service;
 
 import com.accenture.chickentest.domain.dto.ChickenDTO;
 import com.accenture.chickentest.domain.dto.EggDTO;
+import com.accenture.chickentest.repository.TransactionRepository;
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
 import com.lowagie.text.pdf.PdfPCell;
@@ -9,6 +10,7 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
@@ -35,45 +37,56 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 public class NotificationService {
 
     private List<ChickenDTO> listChickens;
-    @Autowired
-     private JavaMailSender javaMailSender;
 
-    @Autowired
 
-    private ChickenService chickenService;
-    @Autowired
-    private EggService eggService;
 
-    public NotificationService(List<ChickenDTO> listChickens) {
-        this.listChickens = listChickens;
-     }
+    private MailSender emailSender;
+
+   private TransactionRepository transactionRepository;
+    public NotificationService(){
+
+
+
+    }
+    public NotificationService(TransactionRepository transactionRepository){
+        this.transactionRepository = transactionRepository;
+
+
+    }
 
 
 
 
     public void
-    sendMail() throws MessagingException {
-        MimeMessage msg = javaMailSender.createMimeMessage();
+    sendMail() {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("giseacosta651@gmail.com");
+        message.setTo("giseacosta651@gmail.com");
+        message.setSubject("urgente");
+        message.setText("prueba");
+        emailSender.send(message);
+    /*    MimeMessage msg = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(msg, true);
 
         helper.setTo("giseacosta651@gmail.com");
 
         helper.setSubject("Alerta:Capacidad llegó al limite");
-        List<ChickenDTO> chickens=chickenService.getChickensWithFarm(8L);
-        List<EggDTO> eggs=eggService.getEggsWithFarm(8L);
+        msg.setContent("sb", "text/html; charset=utf-8");*/
 
-        String sb = "<head>" +
+    /*    List<ChickenDTO> chickens=chickenService.getChickensWithFarm(8L);
+        List<EggDTO> eggs=eggService.getEggsWithFarm(8L);*/
+
+        /*String sb = "<head>" +
                 "<style type=\"text/css\">" +
                 "  .red { color: #f00; }" +
                 "</style>" +
                 "</head>" +
-                "<h1 class=\"red\">" + msg.getSubject() + "</h1>" +
+         /*       "<h1 class=\"red\">" + msg.getSubject() + "</h1>" +
                 "<h2>Cantidad de Pollos" +chickens.stream().count()+"</h2>"+
-                "<h2>Cantidad de Huevos" +eggs.stream().count()+"</h2>";
+                "<h2>Cantidad de Huevos" +eggs.stream().count()+"</h2>";*/
 
-        msg.setContent(sb, "text/html; charset=utf-8");
 
-        javaMailSender.send(msg);
+        //javaMailSender.send(msg);
 
     }
 

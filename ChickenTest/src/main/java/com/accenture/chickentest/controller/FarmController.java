@@ -23,7 +23,7 @@ public class FarmController {
     public List<FarmDTO> getAllFarms(){
 
 
-        return farmService.getFarm();
+        return farmService.getFarms();
     }
 
 

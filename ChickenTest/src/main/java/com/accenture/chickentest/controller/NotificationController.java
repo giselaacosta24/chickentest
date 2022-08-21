@@ -24,7 +24,7 @@ public class NotificationController {
     private ChickenService chickenService;
     @Autowired
     private NotificationService notificationService;
-   @GetMapping("/pdf")
+   /*@GetMapping("/pdf")
     public void exportToPDF(HttpServletResponse response) throws DocumentException, IOException {
     response.setContentType("application/pdf");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
@@ -40,7 +40,7 @@ public class NotificationController {
         exporter.export(response);
 
    }
-
+*/
     // Sending email with attachment
     @PostMapping("/sendMail")
     public void sendMailWithAttachment() throws MessagingException {

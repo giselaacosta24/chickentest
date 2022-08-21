@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -29,6 +30,7 @@ class ChickenServiceTest {
 
 
 
+
     @BeforeEach
     void setup(){
         MockitoAnnotations.openMocks(this);
@@ -37,11 +39,20 @@ class ChickenServiceTest {
         chicken.setPrice(10);
         chicken.setSexo(false);
         chicken.setDateFarm(new Date());
+
     }
 
     @Test
     void save() {
         when(chickenRepository.save(any(Chicken.class))).thenReturn(chicken);
         assertNotNull(chickenService.save(new ChickenDTO()));
+    }
+
+
+
+    @Test
+    void getChickens(){
+
+        assertNotNull(chickenService.getChickens());
     }
 }
