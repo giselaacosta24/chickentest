@@ -13,6 +13,7 @@ import com.accenture.chickentest.exception.ObjectNotFoundException;
 import com.accenture.chickentest.mapper.ModelMapper;
 import com.accenture.chickentest.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSender;
@@ -60,7 +61,7 @@ public class BuySellService {
     }
 
     public ResponseEntity<ChickenDTO> buyChicken(ChickenDTO chickenDTO,Long id) {
-        FarmDTO farmDTO=farmService.getFarm(8);
+        FarmDTO farmDTO=farmService.getFarm(id);
         List<ChickenDTO> chickens=chickenRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOChicken)
                 .collect(Collectors.toList());
         List<ChickenDTO> chickenswithfarm= new ArrayList<>();
@@ -116,7 +117,11 @@ public class BuySellService {
                 helper.setTo("giseacosta651@gmail.com");
                 String htmlMsg = "<h3>Detalle Stock:</h3>"+
                         "<h3> Pollos:</h3>"+countFarm;
+                ClassPathResource pdf = new ClassPathResource("static/attachment.pdf");
 
+
+
+                helper.addAttachment("attachment.pdf", pdf);
                 helper.setText(htmlMsg, true);
                 emailSender.send(message);
             } catch (MessagingException ex) {
@@ -129,7 +134,7 @@ public class BuySellService {
 
 
     public ResponseEntity<EggDTO> buyEgg(EggDTO eggDTO, Long id) {
-        FarmDTO farmDTO=farmService.getFarm(8);
+        FarmDTO farmDTO=farmService.getFarm(id);
 
         List<EggDTO> eggs=eggRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOEgg)
                 .collect(Collectors.toList());
@@ -188,7 +193,11 @@ public class BuySellService {
                 helper.setTo("giseacosta651@gmail.com");
                 String htmlMsg = "<h3>Detalle Stock:</h3>"+
                         "<h3> Huevos:</h3>"+countFarm;
+                ClassPathResource pdf = new ClassPathResource("static/attachment.pdf");
 
+
+
+                helper.addAttachment("attachment.pdf", pdf);
                 helper.setText(htmlMsg, true);
                 emailSender.send(message);
             } catch (MessagingException ex) {
