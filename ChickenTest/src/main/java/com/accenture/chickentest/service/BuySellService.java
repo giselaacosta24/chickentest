@@ -2,37 +2,40 @@ package com.accenture.chickentest.service;
 
 import com.accenture.chickentest.domain.dao.Chicken;
 import com.accenture.chickentest.domain.dao.Egg;
+import com.accenture.chickentest.domain.dao.Farm;
 import com.accenture.chickentest.domain.dao.Transaction;
 import com.accenture.chickentest.domain.dto.ChickenDTO;
 import com.accenture.chickentest.domain.dto.EggDTO;
+import com.accenture.chickentest.domain.dto.FarmDTO;
 import com.accenture.chickentest.domain.dto.ParametroDTO;
 import com.accenture.chickentest.domain.enumStatus.Status;
 import com.accenture.chickentest.exception.ObjectNotFoundException;
 import com.accenture.chickentest.mapper.ModelMapper;
-import com.accenture.chickentest.repository.ChickenRepository;
-import com.accenture.chickentest.repository.EggRepository;
-import com.accenture.chickentest.repository.ParametroRepository;
-import com.accenture.chickentest.repository.TransactionRepository;
+import com.accenture.chickentest.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Access;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 @Service
 public class BuySellService {
 
 
     private final ChickenRepository chickenRepository;
     private final EggRepository eggRepository;
+    private final FarmRepository farmRepository;
 
     private final TransactionRepository transactionRepository;
 
@@ -40,18 +43,24 @@ public class BuySellService {
     private Long capacityFarm;
     private Long countFarm;
     @Autowired
-    private MailSender emailSender;
+    private JavaMailSender emailSender;
+@Autowired
+    private FarmService farmService;
 
-    public BuySellService(ChickenRepository chickenRepository, EggRepository eggRepository,TransactionRepository transactionRepository,ParametroRepository parametroRepository) {
+    public void setMailSender(JavaMailSender emailSender) {
+        this.emailSender = emailSender;
+    }
+    public BuySellService(ChickenRepository chickenRepository, EggRepository eggRepository,TransactionRepository transactionRepository,ParametroRepository parametroRepository, FarmRepository farmRepository) {
         this.chickenRepository = chickenRepository;
         this.eggRepository = eggRepository;
         this.transactionRepository = transactionRepository;
         this.parametroRepository = parametroRepository;
+        this.farmRepository=farmRepository;
 
     }
 
     public ResponseEntity<ChickenDTO> buyChicken(ChickenDTO chickenDTO,Long id) {
-
+        FarmDTO farmDTO=farmService.getFarm(8);
         List<ChickenDTO> chickens=chickenRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOChicken)
                 .collect(Collectors.toList());
         List<ChickenDTO> chickenswithfarm= new ArrayList<>();
@@ -90,17 +99,29 @@ public class BuySellService {
             transaction.setDateTransaction(new Date());
             transactionRepository.save(transaction);
             chickenRepository.save(chicken);
-
+            farmService.updateAmount("compra",farmDTO.getId(),farmDTO,chicken.getPrice());
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
         else {
             System.out.println("enviando correo");
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("giseacosta651@gmail.com");
-            message.setTo("giseacosta651@gmail.com");
-            message.setSubject("Capacidad de granja limitada");
-            message.setText("Capacidad de granja limitada");
-            emailSender.send(message);
+
+            try {
+
+                MimeMessage message = emailSender.createMimeMessage();
+                MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
+
+                message.setSubject("Capacidad de granja limitada");
+                helper = new MimeMessageHelper(message, true);
+                helper.setFrom("giseacosta651@gmail.com");
+                helper.setTo("giseacosta651@gmail.com");
+                String htmlMsg = "<h3>Detalle Stock:</h3>"+
+                        "<h3> Pollos:</h3>"+countFarm;
+
+                helper.setText(htmlMsg, true);
+                emailSender.send(message);
+            } catch (MessagingException ex) {
+                System.out.println("Ocurrio un error al enviar correo");
+            }
             return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 
         }
@@ -108,6 +129,8 @@ public class BuySellService {
 
 
     public ResponseEntity<EggDTO> buyEgg(EggDTO eggDTO, Long id) {
+        FarmDTO farmDTO=farmService.getFarm(8);
+
         List<EggDTO> eggs=eggRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOEgg)
                 .collect(Collectors.toList());
         List<EggDTO> eggswithfarm= new ArrayList<>();
@@ -145,6 +168,7 @@ public class BuySellService {
             transaction.setTypeTransaction("Compra");
             transaction.setDateTransaction(new Date());
             transactionRepository.save(transaction);
+            farmService.updateAmount("compra",farmDTO.getId(),farmDTO,egg.getPrice());
 
             eggRepository.save(egg);
 
@@ -152,12 +176,24 @@ public class BuySellService {
         }
         else {
             System.out.println("enviando correo");
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("giseacosta651@gmail.com");
-            message.setTo("giseacosta651@gmail.com");
-            message.setSubject("Capacidad de granja limitada");
-            message.setText("Capacidad de granja limitada");
-            emailSender.send(message);
+
+            try {
+
+                MimeMessage message = emailSender.createMimeMessage();
+                MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
+
+                message.setSubject("Capacidad de granja limitada");
+                helper = new MimeMessageHelper(message, true);
+                helper.setFrom("giseacosta651@gmail.com");
+                helper.setTo("giseacosta651@gmail.com");
+                String htmlMsg = "<h3>Detalle Stock:</h3>"+
+                        "<h3> Huevos:</h3>"+countFarm;
+
+                helper.setText(htmlMsg, true);
+                emailSender.send(message);
+            } catch (MessagingException ex) {
+                System.out.println("Ocurrio un error al enviar correo");
+            }
             return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 
         }

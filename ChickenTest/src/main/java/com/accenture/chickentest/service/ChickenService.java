@@ -96,6 +96,7 @@ public class ChickenService {
     }
 
     public ChickenDTO getChicken(long id) {
+
         ChickenDTO chickenDTO=new ChickenDTO();
         Chicken chicken = chickenRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("No existe id seleccionado, no se puede modificar"));

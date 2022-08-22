@@ -1,6 +1,5 @@
 package com.accenture.chickentest;
 
-import com.accenture.chickentest.notification.ThreadClass;
 import com.accenture.chickentest.service.TransactionService;
 import com.accenture.chickentest.service.TransformationService;
 import org.modelmapper.ModelMapper;
@@ -13,24 +12,32 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import com.accenture.chickentest.notification.NewThread;
+import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import java.io.IOException;
+import java.util.concurrent.Executor;
+
 @SpringBootApplication
 @EnableScheduling
+@EnableAsync
 public class ChickenTestApplication {
     @Autowired
     JobLauncher jobLauncher;
 
     @Autowired
     Job job;
+
+
 
 
     @Bean
@@ -40,7 +47,7 @@ public class ChickenTestApplication {
     public static void main(String[] args) {
 
         SpringApplication.run(ChickenTestApplication.class, args);
-        ThreadClass t=new ThreadClass();
+       NewThread t = new NewThread();
         t.start();
 
     }
@@ -53,5 +60,11 @@ public class ChickenTestApplication {
                 .toJobParameters();
        jobLauncher.run(job, params);
    }
+
+
+
+
+
+
 
 }

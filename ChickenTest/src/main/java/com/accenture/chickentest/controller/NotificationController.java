@@ -1,15 +1,12 @@
 package com.accenture.chickentest.controller;
 
-import com.accenture.chickentest.domain.dto.ChickenDTO;
 import com.accenture.chickentest.domain.dto.TransactionDTO;
-import com.accenture.chickentest.service.ChickenService;
 import com.accenture.chickentest.service.NotificationService;
 import com.accenture.chickentest.service.TransactionService;
 import com.lowagie.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -43,10 +40,5 @@ public class NotificationController {
 
    }
 
-    // Sending email with attachment
-    @PostMapping("/sendMail")
-    public void sendMailWithAttachment() throws MessagingException {
-        notificationService.sendMail();
 
-    }
 }
