@@ -1,0 +1,15 @@
+CREATE TABLE `chicken` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `amount_days` bigint DEFAULT NULL,
+  `id_farm` bigint DEFAULT NULL,
+  `price` double DEFAULT NULL,
+  `status` int DEFAULT NULL,
+  `date_farm` datetime DEFAULT NULL,
+  `sexo` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+
+
+

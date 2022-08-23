@@ -1,0 +1,56 @@
+
+INSERT INTO `chickentest`.`parametro`
+(`id`,
+`clave`,
+`valor`)
+VALUES
+(1,
+"PrecioPollos",
+39);
+
+INSERT INTO `chickentest`.`parametro`
+(`id`,
+`clave`,
+`valor`)
+VALUES
+(2,
+"PrecioHuevos",
+15);
+
+INSERT INTO `chickentest`.`parametro`
+(`id`,
+`clave`,
+`valor`)
+VALUES
+(3,
+"CapacidadMaximaGranja",
+3);
+
+INSERT INTO `chickentest`.`parametro`
+(`id`,
+`clave`,
+`valor`)
+VALUES
+(4,
+"CantidadDiasVidaPollo",
+45);
+
+INSERT INTO `chickentest`.`parametro`
+(`id`,
+`clave`,
+`valor`)
+VALUES
+(5,
+"CantidadDiasPonerHuevo",
+30);
+
+INSERT INTO `chickentest`.`parametro`
+(`id`,
+`clave`,
+`valor`)
+VALUES
+(6,
+"CantidadDiasVidaHuevo",
+10);
+
+

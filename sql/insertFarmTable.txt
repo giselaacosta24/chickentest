@@ -1,0 +1,8 @@
+INSERT INTO `chickentest`.`farm`
+(`id`,
+`estimate`,
+`name`)
+VALUES
+(8,
+110,
+"Los Pollo Hermanos");
