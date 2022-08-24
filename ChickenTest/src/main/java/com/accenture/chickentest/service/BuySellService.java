@@ -2,7 +2,6 @@ package com.accenture.chickentest.service;
 
 import com.accenture.chickentest.domain.dao.Chicken;
 import com.accenture.chickentest.domain.dao.Egg;
-import com.accenture.chickentest.domain.dao.Farm;
 import com.accenture.chickentest.domain.dao.Transaction;
 import com.accenture.chickentest.domain.dto.ChickenDTO;
 import com.accenture.chickentest.domain.dto.EggDTO;
@@ -13,23 +12,19 @@ import com.accenture.chickentest.exception.ObjectNotFoundException;
 import com.accenture.chickentest.mapper.ModelMapper;
 import com.accenture.chickentest.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.MimeMessageHelper;
+
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+
 @Service
 public class BuySellService {
 
@@ -43,14 +38,10 @@ public class BuySellService {
     private final ParametroRepository parametroRepository;
     private Long capacityFarm;
     private Long countFarm;
-    @Autowired
-    private JavaMailSender emailSender;
+
 @Autowired
     private FarmService farmService;
 
-    public void setMailSender(JavaMailSender emailSender) {
-        this.emailSender = emailSender;
-    }
     public BuySellService(ChickenRepository chickenRepository, EggRepository eggRepository,TransactionRepository transactionRepository,ParametroRepository parametroRepository, FarmRepository farmRepository) {
         this.chickenRepository = chickenRepository;
         this.eggRepository = eggRepository;
@@ -104,29 +95,9 @@ public class BuySellService {
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
         else {
-            System.out.println("enviando correo");
-
-            try {
-
-                MimeMessage message = emailSender.createMimeMessage();
-                MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
-
-                message.setSubject("Capacidad de granja limitada");
-                helper = new MimeMessageHelper(message, true);
-                helper.setFrom("giseacosta651@gmail.com");
-                helper.setTo("giseacosta651@gmail.com");
-                String htmlMsg = "<h3>Detalle Stock:</h3>"+
-                        "<h3> Pollos:</h3>"+countFarm;
-                ClassPathResource pdf = new ClassPathResource("static/attachment.pdf");
 
 
 
-                helper.addAttachment("attachment.pdf", pdf);
-                helper.setText(htmlMsg, true);
-                emailSender.send(message);
-            } catch (MessagingException ex) {
-                System.out.println("Ocurrio un error al enviar correo");
-            }
             return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 
         }
@@ -180,29 +151,7 @@ public class BuySellService {
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
         else {
-            System.out.println("enviando correo");
 
-            try {
-
-                MimeMessage message = emailSender.createMimeMessage();
-                MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
-
-                message.setSubject("Capacidad de granja limitada");
-                helper = new MimeMessageHelper(message, true);
-                helper.setFrom("giseacosta651@gmail.com");
-                helper.setTo("giseacosta651@gmail.com");
-                String htmlMsg = "<h3>Detalle Stock:</h3>"+
-                        "<h3> Huevos:</h3>"+countFarm;
-                ClassPathResource pdf = new ClassPathResource("static/attachment.pdf");
-
-
-
-                helper.addAttachment("attachment.pdf", pdf);
-                helper.setText(htmlMsg, true);
-                emailSender.send(message);
-            } catch (MessagingException ex) {
-                System.out.println("Ocurrio un error al enviar correo");
-            }
             return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 
         }

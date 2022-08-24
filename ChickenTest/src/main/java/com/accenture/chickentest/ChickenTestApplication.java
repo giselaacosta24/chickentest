@@ -18,14 +18,9 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import com.accenture.chickentest.notification.NewThread;
-import org.springframework.context.annotation.Bean;
-import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import java.util.concurrent.Executor;
+
+
 
 @SpringBootApplication
 @EnableScheduling
@@ -47,8 +42,6 @@ public class ChickenTestApplication {
     public static void main(String[] args) {
 
         SpringApplication.run(ChickenTestApplication.class, args);
-       NewThread t = new NewThread();
-        t.start();
 
     }
 
@@ -60,11 +53,6 @@ public class ChickenTestApplication {
                 .toJobParameters();
        jobLauncher.run(job, params);
    }
-
-
-
-
-
 
 
 }

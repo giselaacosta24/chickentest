@@ -57,16 +57,7 @@ class BuySellServiceTest {
     }
 
 
-    @Test
-    void buyChicken() {
-        chickenDTO= new ChickenDTO();
-        chickenDTO.setPrice(10);
-        chickenDTO.setSexo(false);
-        chickenDTO.setDateFarm(new Date());
 
-
-        assertNotNull(buySellService.buyChicken(chickenDTO, id));
-    }
 
     @Test
     void sellChicken() {

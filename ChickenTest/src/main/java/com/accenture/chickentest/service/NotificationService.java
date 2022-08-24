@@ -19,15 +19,18 @@ import java.io.*;
 import java.util.List;
 
 
+
+import com.lowagie.text.DocumentException;
+
+
 @Service
 public class NotificationService {
-
-    private List<TransactionDTO> transactions;
 
 
 
 
    private TransactionRepository transactionRepository;
+    List<TransactionDTO> transactions;
     public NotificationService(){
 
 
@@ -80,7 +83,7 @@ public class NotificationService {
     public void export(HttpServletResponse response) throws DocumentException, IOException {
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, response.getOutputStream());
-
+        System.out.println("PDF created.");
         document.open();
         Font font = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
         font.setSize(18);
@@ -106,7 +109,6 @@ public class NotificationService {
         document.close();
 
     }
-
 
 
 

@@ -1,5 +1,6 @@
 package com.accenture.chickentest.service;
 
+import com.accenture.chickentest.controller.MailController;
 import com.accenture.chickentest.domain.dao.Chicken;
 import com.accenture.chickentest.domain.dto.ChickenDTO;
 import com.accenture.chickentest.domain.dto.ParametroDTO;
@@ -8,6 +9,9 @@ import com.accenture.chickentest.exception.ObjectNotFoundException;
 import com.accenture.chickentest.mapper.ModelMapper;
 import com.accenture.chickentest.repository.ChickenRepository;
 import com.accenture.chickentest.repository.ParametroRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -23,8 +27,12 @@ public class ChickenService {
 
     private final ChickenRepository chickenRepository;
     private final ParametroRepository parametroRepository;
+    private static final Logger logger = LoggerFactory.getLogger(MailController.class);
 
+    @Autowired
+    private MailerService mailerService;
     private Long priceChicken;
+    private Long capacity;
 
     public ChickenService(ChickenRepository chickenRepository,ParametroRepository parametroRepository) {
         this.chickenRepository = chickenRepository;
@@ -65,6 +73,27 @@ public class ChickenService {
                 chickenswithfarm.add(c);
             }
         });
+        List<ParametroDTO> parametros = parametroRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOParametro)
+                .collect(Collectors.toList());
+
+        parametros.forEach(p -> {
+            if (Objects.equals(p.getClave(), "CapacidadMaximaGranja")) {
+                {
+                    capacity = p.getValor();
+
+                }
+            }
+
+        });
+
+        if(chickenswithfarm.stream().count()==capacity || chickenswithfarm.stream().count() > capacity) {
+            try {
+                mailerService.sendNotification();
+            } catch (Exception e) {
+                // catch error
+                logger.info("Error Sending Email: " + e.getMessage());
+            }
+        }
         return chickenswithfarm;
 
     }

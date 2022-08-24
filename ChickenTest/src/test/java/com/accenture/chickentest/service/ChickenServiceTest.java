@@ -42,11 +42,11 @@ class ChickenServiceTest {
 
     }
 
-    @Test
+  /*  @Test
     void save() {
         when(chickenRepository.save(any(Chicken.class))).thenReturn(chicken);
         assertNotNull(chickenService.save(new ChickenDTO()));
-    }
+    }*/
 
 
 
