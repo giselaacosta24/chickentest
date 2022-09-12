@@ -36,23 +36,29 @@ public class BuySellService {
     private final TransactionRepository transactionRepository;
 
     private final ParametroRepository parametroRepository;
-    private Long capacityFarm;
+    private ParametroDTO capacityFarm;
     private Long countFarm;
 
-@Autowired
+   @Autowired
     private FarmService farmService;
+    @Autowired
+    private ParametroService parametroService;
 
-    public BuySellService(ChickenRepository chickenRepository, EggRepository eggRepository,TransactionRepository transactionRepository,ParametroRepository parametroRepository, FarmRepository farmRepository) {
+    public BuySellService(ChickenRepository chickenRepository, EggRepository eggRepository, TransactionRepository transactionRepository, ParametroRepository parametroRepository, FarmRepository farmRepository, FarmService farmService,ParametroService parametroService) {
         this.chickenRepository = chickenRepository;
         this.eggRepository = eggRepository;
         this.transactionRepository = transactionRepository;
         this.parametroRepository = parametroRepository;
         this.farmRepository=farmRepository;
+        this.farmService=farmService;
+        this.parametroService=parametroService;
 
     }
 
+
+
     public ResponseEntity<ChickenDTO> buyChicken(ChickenDTO chickenDTO,Long id) {
-        FarmDTO farmDTO=farmService.getFarm(id);
+
         List<ChickenDTO> chickens=chickenRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOChicken)
                 .collect(Collectors.toList());
         List<ChickenDTO> chickenswithfarm= new ArrayList<>();
@@ -64,19 +70,13 @@ public class BuySellService {
             }
         });
         countFarm=chickenswithfarm.stream().count();
-        List<ParametroDTO> parametros = parametroRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOParametro)
-                .collect(Collectors.toList());
 
-        parametros.forEach(p -> {
-            if (Objects.equals(p.getClave(), "CapacidadMaximaGranja")) {
-                {
-                    capacityFarm = p.getValor();
+        FarmDTO farmDTO=farmService.getFarm(id);
 
-                }
-            }
+        capacityFarm=parametroService.getParametroIdByName("CapacidadMaximaGranja");
 
-        });
-        if (countFarm < capacityFarm) {
+
+        if (countFarm < capacityFarm.getValor()) {
 
             chickenDTO.setIdFarm(id);
             chickenDTO.setStatus(Status.COMPRADO);
@@ -119,20 +119,10 @@ public class BuySellService {
         });
 
         countFarm=eggswithfarm.stream().count();
-        List<ParametroDTO> parametros = parametroRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOParametro)
-                .collect(Collectors.toList());
+        capacityFarm=parametroService.getParametroIdByName("CapacidadMaximaGranja");
 
-        parametros.forEach(p -> {
-            if (Objects.equals(p.getClave(), "CapacidadMaximaGranja")) {
-                {
-                    capacityFarm = p.getValor();
 
-                }
-            }
-
-        });
-
-        if (countFarm < capacityFarm) {
+        if (countFarm < capacityFarm.getValor()) {
 
             eggDTO.setIdFarm(id);
             eggDTO.setStatus(Status.COMPRADO);

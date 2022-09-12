@@ -41,14 +41,13 @@ public class TransactionService {
         List<TransactionDTO> transactionsList= transactionRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOTransaction)
                 .collect(Collectors.toList());
 
-
         List<TransactionDTO> transactionsSells=new ArrayList<TransactionDTO>();
         transactionsList.forEach(t -> {
             if(Objects.equals(t.getTypeTransaction(), "Venta")) {
-
                 transactionsSells.add(t);
             }
         });
+
         return transactionsSells;
     }
 
@@ -57,7 +56,6 @@ public class TransactionService {
     {
         List<TransactionDTO> transactionsBuys= transactionRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOTransaction)
                 .collect(Collectors.toList());
-
 
         AtomicReference<Double> amountAll= new AtomicReference<>((double) 0);
         transactionsBuys.forEach(t -> {
@@ -102,8 +100,6 @@ public class TransactionService {
     {
         List<TransactionDTO> transactionsList= transactionRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOTransaction)
                 .collect(Collectors.toList());
-
-
 
         return transactionsList;
     }

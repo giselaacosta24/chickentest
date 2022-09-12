@@ -1,6 +1,8 @@
 package com.accenture.chickentest.service;
 
+import com.accenture.chickentest.domain.dao.Farm;
 import com.accenture.chickentest.domain.dao.Parametro;
+import com.accenture.chickentest.domain.dto.FarmDTO;
 import com.accenture.chickentest.domain.dto.ParametroDTO;
 import com.accenture.chickentest.exception.ObjectNotFoundException;
 import com.accenture.chickentest.mapper.ModelMapper;
@@ -73,6 +75,16 @@ public class ParametroService {
         return parametroDTO;
 
 
+
+    }
+
+    public ParametroDTO getParametroIdByName(String clave) {
+        ParametroDTO parametroDTO=new ParametroDTO();
+        Parametro parametro = parametroRepository.findByName(clave).orElseThrow(() -> new ObjectNotFoundException("No existe parametro"));
+        if(parametro.getId() !=  null)
+            parametroDTO = ModelMapper.INSTANCE.daoToDTOParametro(parametro);
+
+        return parametroDTO;
 
     }
 

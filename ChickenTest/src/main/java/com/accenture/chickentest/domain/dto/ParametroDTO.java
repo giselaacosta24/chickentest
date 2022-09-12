@@ -1,10 +1,11 @@
 package com.accenture.chickentest.domain.dto;
 
+import com.accenture.chickentest.domain.dao.Parametro;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class ParametroDTO {
+public class ParametroDTO extends Parametro {
 
     @JsonProperty("id")
     private Long id;

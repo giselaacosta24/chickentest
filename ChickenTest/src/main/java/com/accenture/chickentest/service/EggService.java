@@ -27,16 +27,22 @@ public class EggService {
 
     private final EggRepository eggRepository;
     private final ParametroRepository parametroRepository;
-    private Long priceEgg;
 
-    private Long capacity;
-    private static final Logger logger = LoggerFactory.getLogger(MailController.class);
+
+    private ParametroDTO parametroDTO;
+
     @Autowired
     private MailerService mailerService;
-    public EggService(EggRepository eggRepository,ParametroRepository parametroRepository) {
+    @Autowired
+    private ParametroService parametroService;
+
+    private static final Logger logger = LoggerFactory.getLogger(MailController.class);
+
+
+    public EggService(EggRepository eggRepository, ParametroRepository parametroRepository, ParametroService parametroService) {
         this.eggRepository = eggRepository;
         this.parametroRepository = parametroRepository;
-
+        this.parametroService= parametroService;
     }
 
 
@@ -54,20 +60,9 @@ public class EggService {
 
         // convert DTO to Entity
         Egg egg =  ModelMapper.INSTANCE.DTOtoDaoEgg(eggDTO);
-        List<ParametroDTO> parametros = parametroRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOParametro)
-                .collect(Collectors.toList());
+        parametroDTO=parametroService.getParametroIdByName("PrecioHuevos");
 
-        parametros.forEach(p -> {
-            if (Objects.equals(p.getClave(), "PrecioHuevos")) {
-                {
-                    priceEgg = p.getValor();
-
-                }
-            }
-
-        });
-
-        egg.setPrice(priceEgg);
+        egg.setPrice(parametroDTO.getValor());
         eggRepository.save(egg);
 
         return new ResponseEntity<EggDTO>(HttpStatus.CREATED);
@@ -76,6 +71,8 @@ public class EggService {
 
 
     public EggDTO getEgg(long id) {
+
+
         EggDTO eggDTO=new EggDTO();
         Egg egg = eggRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("No existe id seleccionado, no se puede modificar"));
@@ -117,7 +114,6 @@ public class EggService {
                 .collect(Collectors.toList());
         List<EggDTO> eggswithoutfarm=new ArrayList<EggDTO>();
         eggs.forEach(e -> {
-            System.out.print(e.getStatus() != Status.VENDIDO);
             if(e.getIdFarm()==null && e.getStatus() == null)  {
 
                 eggswithoutfarm.add(e);
@@ -139,20 +135,9 @@ public class EggService {
             }
         });
 
-        List<ParametroDTO> parametros = parametroRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOParametro)
-                .collect(Collectors.toList());
+        parametroDTO=parametroService.getParametroIdByName("CapacidadMaximaGranja");
 
-        parametros.forEach(p -> {
-            if (Objects.equals(p.getClave(), "CapacidadMaximaGranja")) {
-                {
-                    capacity = p.getValor();
-
-                }
-            }
-
-        });
-
-        if(eggswithfarm.stream().count()==capacity || eggswithfarm.stream().count() > capacity) {
+        if(eggswithfarm.stream().count()==parametroDTO.getValor() || eggswithfarm.stream().count() > parametroDTO.getValor()) {
             try {
                 mailerService.sendNotification();
             } catch (Exception e) {

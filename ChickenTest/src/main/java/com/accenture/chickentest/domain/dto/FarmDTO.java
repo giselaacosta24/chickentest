@@ -1,5 +1,6 @@
 package com.accenture.chickentest.domain.dto;
 
+import com.accenture.chickentest.domain.dao.Farm;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
@@ -7,7 +8,7 @@ import lombok.Data;
 
 
 @Data
-public class FarmDTO {
+public class FarmDTO extends Farm {
     @JsonProperty("id")
     private Long id;
 

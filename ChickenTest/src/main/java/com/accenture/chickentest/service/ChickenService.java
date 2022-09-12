@@ -31,12 +31,15 @@ public class ChickenService {
 
     @Autowired
     private MailerService mailerService;
-    private Long priceChicken;
-    private Long capacity;
 
-    public ChickenService(ChickenRepository chickenRepository,ParametroRepository parametroRepository) {
+    private ParametroDTO parametroDTO;
+    @Autowired
+    private ParametroService parametroService;
+
+    public ChickenService(ChickenRepository chickenRepository,ParametroRepository parametroRepository,ParametroService parametroService) {
         this.chickenRepository = chickenRepository;
        this.parametroRepository = parametroRepository;
+       this.parametroService=parametroService;
 }
 
     public List<ChickenDTO> getChickens() {
@@ -73,20 +76,10 @@ public class ChickenService {
                 chickenswithfarm.add(c);
             }
         });
-        List<ParametroDTO> parametros = parametroRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOParametro)
-                .collect(Collectors.toList());
 
-        parametros.forEach(p -> {
-            if (Objects.equals(p.getClave(), "CapacidadMaximaGranja")) {
-                {
-                    capacity = p.getValor();
+        parametroDTO=parametroService.getParametroIdByName("CapacidadMaximaGranja");
 
-                }
-            }
-
-        });
-
-        if(chickenswithfarm.stream().count()==capacity || chickenswithfarm.stream().count() > capacity) {
+        if(chickenswithfarm.stream().count()==parametroDTO.getValor() || chickenswithfarm.stream().count() > parametroDTO.getValor()) {
             try {
                 mailerService.sendNotification();
             } catch (Exception e) {
@@ -105,19 +98,9 @@ public class ChickenService {
 
         // convert DTO to Entity
         Chicken chicken =  ModelMapper.INSTANCE.DTOtoDaoChicken(chickenDTO);
-        List<ParametroDTO> parametros = parametroRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOParametro)
-                .collect(Collectors.toList());
 
-        parametros.forEach(p -> {
-            if (Objects.equals(p.getClave(), "PrecioPollos")) {
-                {
-                   priceChicken = p.getValor();
-
-                }
-            }
-
-        });
-        chicken.setPrice(priceChicken);
+        parametroDTO=parametroService.getParametroIdByName("PrecioPollos");
+        chicken.setPrice(parametroDTO.getValor());
         chickenRepository.save(chicken);
 
        return new ResponseEntity<>(HttpStatus.CREATED);

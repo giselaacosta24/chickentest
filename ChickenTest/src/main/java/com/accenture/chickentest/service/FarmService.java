@@ -33,7 +33,6 @@ public class FarmService {
         FarmDTO farmDTO=new FarmDTO();
         Farm farm = farmRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("No existe farm"));
-
         if(farm.getId() !=  null)
             farmDTO = ModelMapper.INSTANCE.daoToDTOFarm(farm);
 
@@ -71,10 +70,12 @@ public class FarmService {
     }
 
     public ResponseEntity<FarmDTO> update(long id,FarmDTO farmDTO) {
-        Farm farmDTORequest = ModelMapper.INSTANCE.DTOtoDaoFarm(farmDTO);
 
+        Farm farmDTORequest = ModelMapper.INSTANCE.DTOtoDaoFarm(farmDTO);
         Farm farm = farmRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("No existe id seleccionado, no se puede modificar"));
+
+
         farm.setName(farmDTORequest.getName());
         farm.setEstimate(farmDTORequest.getEstimate());
         farmRepository.save(farm);
@@ -82,8 +83,6 @@ public class FarmService {
 
     }
     public ResponseEntity<FarmDTO> updateAmount(String tipo,long id,FarmDTO farmDTO,double number) {
-
-
 
         Farm farmDTORequest = ModelMapper.INSTANCE.DTOtoDaoFarm(farmDTO);
 
