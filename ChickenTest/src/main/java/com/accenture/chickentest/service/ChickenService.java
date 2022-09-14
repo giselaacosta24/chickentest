@@ -44,9 +44,12 @@ public class ChickenService {
 
     public List<ChickenDTO> getChickens() {
 
-        return chickenRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOChicken)
+        List<ChickenDTO> totalChickens=chickenRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOChicken)
                 .collect(Collectors.toList());
-
+        if (totalChickens.isEmpty()) {
+            throw new ObjectNotFoundException("No existen pollos");
+        }
+        return totalChickens;
     }
 
 
@@ -60,15 +63,19 @@ public class ChickenService {
                 chickenswithoutfarm.add(c);
             }
         });
+
+
         return chickenswithoutfarm;
 
     }
 
 
     public List<ChickenDTO> getChickensWithFarm(Long id) {
+
         List<ChickenDTO> chickens=chickenRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOChicken)
                 .collect(Collectors.toList());
         List<ChickenDTO> chickenswithfarm= new ArrayList<>();
+
         chickens.forEach(c -> {
             if(Objects.equals(c.getIdFarm(), id) && ((c.getStatus() == Status.COMPRADO)||(c.getStatus() == Status.CONVERTIDO) ))
             {
@@ -87,6 +94,11 @@ public class ChickenService {
                 logger.info("Error Sending Email: " + e.getMessage());
             }
         }
+
+        if (chickenswithfarm.isEmpty()) {
+            throw new ObjectNotFoundException("No existen pollos en granja");
+        }
+
         return chickenswithfarm;
 
     }
@@ -111,10 +123,11 @@ public class ChickenService {
 
         ChickenDTO chickenDTO=new ChickenDTO();
         Chicken chicken = chickenRepository.findById(id)
-                .orElseThrow(() -> new ObjectNotFoundException("No existe id seleccionado, no se puede modificar"));
+                .orElseThrow(() -> new ObjectNotFoundException("No existe id seleccionado"));
 
-        if(chicken.getId() !=  null)
+        if(chicken.getId() !=  null) {
             chickenDTO = ModelMapper.INSTANCE.daoToDTOChicken(chicken);
+        }
 
         return chickenDTO;
 

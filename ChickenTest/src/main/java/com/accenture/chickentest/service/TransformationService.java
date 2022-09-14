@@ -3,16 +3,20 @@ package com.accenture.chickentest.service;
 
 import com.accenture.chickentest.domain.dao.Chicken;
 import com.accenture.chickentest.domain.dao.Egg;
+import com.accenture.chickentest.domain.dao.Farm;
 import com.accenture.chickentest.domain.dto.ChickenDTO;
 
 import com.accenture.chickentest.domain.dto.EggDTO;
 import com.accenture.chickentest.domain.dto.ParametroDTO;
 import com.accenture.chickentest.domain.enumStatus.Status;
+import com.accenture.chickentest.exception.ObjectNotFoundException;
 import com.accenture.chickentest.mapper.ModelMapper;
 import com.accenture.chickentest.repository.ChickenRepository;
 import com.accenture.chickentest.repository.EggRepository;
+import com.accenture.chickentest.repository.FarmRepository;
 import com.accenture.chickentest.repository.ParametroRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -29,48 +33,38 @@ import java.util.stream.Collectors;
 public class TransformationService {
     private final ChickenRepository chickenRepository;
     private final EggRepository eggRepository;
-
+    private final FarmRepository farmRepository;
     private final ParametroRepository parametroRepository;
-    private Long daysPutAnEgg;
-    private Long daysLifeEgg;
-    private Long daysLifeChicken;
-    private Long priceEgg;
-    private Long priceChicken;
+    private ParametroDTO daysPutAnEgg;
+    private ParametroDTO daysLifeEgg;
+    private ParametroDTO daysLifeChicken;
+    private ParametroDTO priceEgg;
+    private ParametroDTO priceChicken;
 
-
-    public TransformationService(ChickenRepository chickenRepository, EggRepository eggRepository, ParametroRepository parametroRepository) {
+    private Long id;
+    @Autowired
+    private ParametroService parametroService;
+    public TransformationService(ChickenRepository chickenRepository, EggRepository eggRepository, ParametroRepository parametroRepository,ParametroService parametroService,FarmRepository farmRepository) {
         this.chickenRepository = chickenRepository;
         this.eggRepository = eggRepository;
         this.parametroRepository = parametroRepository;
+        this.parametroService=parametroService;
+        this.farmRepository=farmRepository;
+
     }
 
-    public ResponseEntity<EggDTO> eggToChicken(Long id) {
-        List<ParametroDTO> parametros = parametroRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOParametro)
-                .collect(Collectors.toList());
-
+    public ResponseEntity<EggDTO> eggToChicken() {
+        Farm farm=farmRepository.findById(1L)
+                .orElseThrow(() -> new ObjectNotFoundException("No existe Farm"));
         List<EggDTO> eggs = eggRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOEgg)
                 .collect(Collectors.toList());
 
         List<EggDTO> eggsTotal = new ArrayList<>();
-
-        parametros.forEach(p -> {
-            if (Objects.equals(p.getClave(), "CantidadDiasVidaHuevo")) {
-                {
-                    this.daysLifeEgg = p.getValor();
-
-                }
-            }
-            if (Objects.equals(p.getClave(), "PrecioPollos")) {
-                {
-                    this.priceChicken = p.getValor();
-
-                }
-            }
-        });
-
+        daysLifeEgg=parametroService.getParametroIdByName("CantidadDiasVidaHuevo");
+        priceChicken=parametroService.getParametroIdByName("PrecioPollos");
 
         eggs.forEach(e -> {
-            if (Objects.equals(e.getIdFarm(), id) && ((e.getStatus() == Status.COMPRADO) || (e.getStatus() == Status.PUESTO))) {
+            if (Objects.equals(e.getIdFarm(), farm.getId()) && ((e.getStatus() == Status.COMPRADO) || (e.getStatus() == Status.PUESTO))) {
                 {
 
                     eggsTotal.add(e);
@@ -78,14 +72,14 @@ public class TransformationService {
             }
         });
         eggsTotal.forEach(eg -> {
-            if (eg.getAmountDays() >= daysLifeEgg) {
+            if (eg.getAmountDays() >= daysLifeEgg.getValor()) {
 
 
                 Egg egg = ModelMapper.INSTANCE.DTOtoDaoEgg(eg);
                 Chicken chicken = new Chicken();
                 chicken.setAmountDays(egg.getAmountDays());
                 chicken.setDateFarm(egg.getDateFarm());
-                chicken.setPrice(this.priceChicken);
+                chicken.setPrice(this.priceChicken.getValor());
                 chicken.setIdFarm(egg.getIdFarm());
                 chicken.setSexo(false);
                 chicken.setStatus(Status.CONVERTIDO);
@@ -101,29 +95,20 @@ public class TransformationService {
 
     }
 
-    public ResponseEntity<ChickenDTO> chickenToDead(Long id) {
+    public ResponseEntity<ChickenDTO> chickenToDead() {
 
-        List<ParametroDTO> parametros = parametroRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOParametro)
-                .collect(Collectors.toList());
+        Farm farm=farmRepository.findById(1L)
+                .orElseThrow(() -> new ObjectNotFoundException("No existe Farm"));
 
         List<ChickenDTO> chickens = chickenRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOChicken)
                 .collect(Collectors.toList());
         List<ChickenDTO> chickensTotal = new ArrayList<>();
 
-
-        parametros.forEach(p -> {
-            if (Objects.equals(p.getClave(), "CantidadDiasVidaPollo")) {
-                {
-                    this.daysLifeChicken = p.getValor();
-
-                }
-            }
-
-        });
+        daysLifeChicken=parametroService.getParametroIdByName("CantidadDiasVidaPollo");
 
 
         chickens.forEach(ch -> {
-            if (Objects.equals(ch.getIdFarm(), id) && ((ch.getStatus() == Status.COMPRADO)) || (ch.getStatus() == Status.CONVERTIDO)) {
+            if (Objects.equals(ch.getIdFarm(), farm.getId()) && ((ch.getStatus() == Status.COMPRADO)) || (ch.getStatus() == Status.CONVERTIDO)) {
                 {
 
                     chickensTotal.add(ch);
@@ -132,7 +117,7 @@ public class TransformationService {
         });
        chickensTotal.forEach(c -> {
 
-            if (c.getAmountDays() >= daysLifeChicken) {
+            if (c.getAmountDays() >= daysLifeChicken.getValor()) {
                c.setStatus(Status.MUERTO);
                c.setIdFarm(null);
 
@@ -147,38 +132,21 @@ public class TransformationService {
     }
 
 
-    public ResponseEntity<ChickenDTO> putAnEgg(Long id) {
-
-
-        List<ParametroDTO> parametros = parametroRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOParametro)
-                .collect(Collectors.toList());
+    public ResponseEntity<ChickenDTO> putAnEgg() {
+        Farm farm=farmRepository.findById(1L)
+                .orElseThrow(() -> new ObjectNotFoundException("No existe Farm"));
         List<ChickenDTO> chickens = chickenRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOChicken)
                 .collect(Collectors.toList());
-
-        parametros.forEach(p -> {
-            if (Objects.equals(p.getClave(), "CantidadDiasPonerHuevo")) {
-                {
-                    this.daysPutAnEgg = p.getValor();
-                    System.out.println(this.daysPutAnEgg);
-
-                }
-            }
-            if (Objects.equals(p.getClave(), "PrecioHuevos")) {
-                {
-                    this.priceEgg = p.getValor();
-
-                }
-            }
-        });
-
+        daysPutAnEgg=parametroService.getParametroIdByName("CantidadDiasPonerHuevo");
+        priceEgg=parametroService.getParametroIdByName("PrecioHuevos");
 
         chickens.forEach(c -> {
-            if (Objects.equals(c.getIdFarm(), id) && (c.getStatus() == Status.COMPRADO) && (Objects.equals(c.getAmountDays(), daysPutAnEgg)) && (c.getSexo() == true)) {
+            if (Objects.equals(c.getIdFarm(), farm.getId()) && (c.getStatus() == Status.COMPRADO) && (Objects.equals(c.getAmountDays(), daysPutAnEgg)) && (c.getSexo() == true)) {
                 {
                     Egg egg = new Egg();
                     egg.setAmountDays(0L);
                     egg.setDateFarm(new Date());
-                    egg.setPrice(this.priceEgg);
+                    egg.setPrice(this.priceEgg.getValor());
                     egg.setIdFarm(id);
                     egg.setStatus(Status.PUESTO);
                     eggRepository.save(egg);
@@ -187,14 +155,12 @@ public class TransformationService {
             }
         });
 
-
         return new ResponseEntity<>(HttpStatus.CREATED);
 
     }
 
 
     public void updateDays() {
-
         List<EggDTO> eggs = eggRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOEgg)
                 .collect(Collectors.toList());
         List<ChickenDTO> chickens = chickenRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOChicken)
@@ -215,10 +181,10 @@ public class TransformationService {
             Date dateNow= new Date();
 
             Date dateCreate=c.getDateFarm();
-
             long diff =  ChronoUnit.DAYS.between(dateCreate.toInstant(),dateNow.toInstant());
             c.setAmountDays(diff);
             Chicken chicken = ModelMapper.INSTANCE.DTOtoDaoChicken(c);
+
             chickenRepository.save(chicken);
 
 

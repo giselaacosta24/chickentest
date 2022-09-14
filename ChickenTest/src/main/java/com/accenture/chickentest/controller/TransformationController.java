@@ -15,32 +15,32 @@ public class TransformationController {
     @Autowired
     private TransformationService transformationService;
 
-    @PutMapping("/eggs/{id}")
-    public ResponseEntity<EggDTO> eggToChicken( @PathVariable long id)
+    @PutMapping("/eggs")
+    public ResponseEntity<EggDTO> eggToChicken( )
     {
 
-        return this.transformationService.eggToChicken(id);
+        return this.transformationService.eggToChicken();
 
     }
 
-    @PutMapping("/chickens/{id}")
-    public ResponseEntity<ChickenDTO> chickenToDead(@PathVariable long id)
+    @PutMapping("/chickens")
+    public ResponseEntity<ChickenDTO> chickenToDead()
     {
 
-        return this.transformationService.chickenToDead(id);
+        return this.transformationService.chickenToDead();
 
     }
-    @PutMapping("/putEgg/{id}")
-    public ResponseEntity<ChickenDTO> putAnEgg(@PathVariable long id)
+    @PutMapping("/putEgg")
+    public ResponseEntity<ChickenDTO> putAnEgg()
     {
 
-        return this.transformationService.putAnEgg(id);
+        return this.transformationService.putAnEgg();
 
     }
 
 
     @PutMapping("/updateDays")
-    public void putAnEgg()
+    public void updateDays()
     {
 
        this.transformationService.updateDays();

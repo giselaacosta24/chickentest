@@ -1,8 +1,6 @@
 package com.accenture.chickentest.service;
 
-import com.accenture.chickentest.domain.dao.Farm;
 import com.accenture.chickentest.domain.dao.Parametro;
-import com.accenture.chickentest.domain.dto.FarmDTO;
 import com.accenture.chickentest.domain.dto.ParametroDTO;
 import com.accenture.chickentest.exception.ObjectNotFoundException;
 import com.accenture.chickentest.mapper.ModelMapper;
@@ -12,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,8 +58,16 @@ public class ParametroService {
 
     public List<ParametroDTO> getParametros() {
 
-        return parametroRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOParametro)
+        List<ParametroDTO> totalParametros=new ArrayList<>();
+
+        totalParametros=parametroRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOParametro)
                 .collect(Collectors.toList());
+        if (totalParametros.isEmpty()) {
+            throw new ObjectNotFoundException("No existen parametros en BD");
+        }
+        return totalParametros;
+
+
 
     }
 
@@ -87,5 +94,6 @@ public class ParametroService {
         return parametroDTO;
 
     }
+
 
 }

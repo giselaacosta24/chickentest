@@ -120,8 +120,8 @@ class ChickenServiceTest {
     @Test
     void getChickens(){
 
-        assertNotNull(chickenService.getChickens());
-    }
+        when(chickenRepository.findAll()).thenReturn(listchickens);
+        assertEquals(4,chickenService.getChickens().stream().count());    }
 
     @Test
     void getChickensWithOutFarm() {

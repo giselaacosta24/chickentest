@@ -1,6 +1,7 @@
 package com.accenture.chickentest.service;
 
 import com.accenture.chickentest.domain.dto.TransactionDTO;
+import com.accenture.chickentest.exception.ObjectNotFoundException;
 import com.accenture.chickentest.mapper.ModelMapper;
 import com.accenture.chickentest.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,10 @@ public class TransactionService {
                 transactionsBuys.add(t);
             }
         });
+
+        if (transactionsBuys.isEmpty()) {
+            throw new ObjectNotFoundException("No existen transacciones de compras en BD");
+        }
         return transactionsBuys;
 
     }
@@ -47,7 +52,9 @@ public class TransactionService {
                 transactionsSells.add(t);
             }
         });
-
+        if (transactionsSells.isEmpty()) {
+            throw new ObjectNotFoundException("No existen transacciones de ventas en BD");
+        }
         return transactionsSells;
     }
 

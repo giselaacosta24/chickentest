@@ -4,6 +4,7 @@ package com.accenture.chickentest.service;
 import com.accenture.chickentest.domain.dao.Farm;
 
 import com.accenture.chickentest.domain.dto.FarmDTO;
+import com.accenture.chickentest.domain.dto.ParametroDTO;
 import com.accenture.chickentest.exception.ObjectNotFoundException;
 import com.accenture.chickentest.mapper.ModelMapper;
 
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -25,8 +27,16 @@ public class FarmService {
 
     public List<FarmDTO> getFarms() {
 
-        return farmRepository.findAll().stream().map(farmDTO -> ModelMapper.INSTANCE.daoToDTOFarm(farmDTO))
+
+        List<FarmDTO> totalFarms=new ArrayList<>();
+
+        totalFarms=farmRepository.findAll().stream().map(ModelMapper.INSTANCE::daoToDTOFarm)
                 .collect(Collectors.toList());
+        if (totalFarms.isEmpty()) {
+            throw new ObjectNotFoundException("No existen farms en BD");
+        }
+        return totalFarms;
+
 
     }
     public FarmDTO getFarm(long id) {

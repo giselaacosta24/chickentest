@@ -47,10 +47,13 @@ public class EggService {
 
 
     public List<EggDTO> getEggs() {
-
-        return eggRepository.findAll().stream().map(eggDTO -> ModelMapper.INSTANCE.daoToDTOEgg(eggDTO))
+        List<EggDTO> totalEggs=eggRepository.findAll().stream().map(eggDTO -> ModelMapper.INSTANCE.daoToDTOEgg(eggDTO))
                 .collect(Collectors.toList());
 
+        if (totalEggs.isEmpty()) {
+            throw new ObjectNotFoundException("No existen huevos");
+        }
+        return totalEggs;
     }
 
 
@@ -119,6 +122,7 @@ public class EggService {
                 eggswithoutfarm.add(e);
             }
         });
+
         return eggswithoutfarm;
 
     }
@@ -144,6 +148,9 @@ public class EggService {
                 // catch error
                 logger.info("Error Sending Email: " + e.getMessage());
             }
+        }
+        if (eggswithfarm.isEmpty()) {
+            throw new ObjectNotFoundException("No existen huevos en la granja");
         }
         return eggswithfarm;
 
