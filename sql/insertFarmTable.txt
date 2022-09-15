@@ -3,6 +3,6 @@ INSERT INTO `chickentest`.`farm`
 `estimate`,
 `name`)
 VALUES
-(8,
+(1,
 110,
 "Los Pollo Hermanos");
