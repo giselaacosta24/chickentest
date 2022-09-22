@@ -4,20 +4,32 @@ package com.accenture.chickentest.controller;
 import com.accenture.chickentest.service.EggService;
 import com.accenture.chickentest.domain.dto.EggDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin ({"http://localhost:4200"})
-@RequestMapping("/api/v1/eggs")
+@RequestMapping("/eggs")
 public class EggsController {
 
     @Autowired
     private EggService eggService;
+    @Value("${config.balanceador.test}")
+    private String balanceadorTest;
 
+    @GetMapping("/balanceador-test")
+    public ResponseEntity<?> balanceadorTest() {
+        Map<String, Object> response = new HashMap<String, Object>();
+        response.put("balanceador", balanceadorTest);
+        response.put("eggs", eggService.getEggs());
+        return ResponseEntity.ok(response);
+    }
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)

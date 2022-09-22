@@ -159,6 +159,7 @@ public class BuySellService {
         transactionRepository.save(transaction);
 
         chicken.setStatus(Status.VENDIDO);
+        System.out.println(chicken.getPrice());
         chickenRepository.save(chicken);
 
         return  new ResponseEntity<>(HttpStatus.OK);

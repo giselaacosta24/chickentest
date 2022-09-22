@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 
 import org.springframework.scheduling.annotation.Async;
@@ -25,6 +26,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 @SpringBootApplication
 @EnableScheduling
 @EnableAsync
+@EnableEurekaClient
 public class ChickenTestApplication {
     @Autowired
     JobLauncher jobLauncher;
@@ -45,7 +47,7 @@ public class ChickenTestApplication {
 
     }
 
-   @Scheduled(cron = "0 */1 * * * ?")
+  @Scheduled(cron = "0 */1 * * * ?")
     public void perform() throws Exception
     {
        JobParameters params = new JobParametersBuilder()
@@ -53,6 +55,7 @@ public class ChickenTestApplication {
                 .toJobParameters();
        jobLauncher.run(job, params);
    }
+
 
 
 }

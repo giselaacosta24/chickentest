@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin({"http://localhost:4200"})
-@RequestMapping("/api/v1/parametros")
+@RequestMapping("/parametros")
 public class ParametroController {
 
     @Autowired

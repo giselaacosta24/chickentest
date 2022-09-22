@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin({"http://localhost:4200"})
-@RequestMapping("/api/v1/transformation")
+@RequestMapping("/transformation")
 public class TransformationController {
     @Autowired
     private TransformationService transformationService;
