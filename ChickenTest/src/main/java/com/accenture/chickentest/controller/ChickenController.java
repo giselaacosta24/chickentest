@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/chickens")
 public class ChickenController {
 
@@ -39,10 +38,10 @@ public class ChickenController {
         return chickenService.getChickens();
     }
 
+
     @PostMapping
     public ResponseEntity<ChickenDTO> createChicken(@RequestBody ChickenDTO chickenDTO) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Access-Control-Allow-Origin", "*");
+
        return chickenService.save(chickenDTO);
     }
 
@@ -52,12 +51,13 @@ public class ChickenController {
         return chickenService.getChicken(id);
     }
 
+    //@CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/chickensfree")
     public List<ChickenDTO> getChickensWithOutFarm() {
 
         return chickenService.getChickensWithOutFarm();
     }
-
+   // @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/chickensFarm/{id}")
     public List<ChickenDTO> getChickensWithFarm(@PathVariable long id) {
 
